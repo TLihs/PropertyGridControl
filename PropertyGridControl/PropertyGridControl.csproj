@@ -48,7 +48,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\BaseGridItemControl.cs" />
+    <Compile Include="Base\BaseCheckBoxGridItem.cs" />
+    <Compile Include="Base\BaseGridItem.cs" />
+    <Compile Include="Base\BaseTypedGridItem.cs" />
+    <Compile Include="Controls\CheckBoxGridItemControl.xaml.cs">
+      <DependentUpon>CheckBoxGridItemControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GridControl.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -76,6 +81,11 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Page Include="Controls\CheckBoxGridItemControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
