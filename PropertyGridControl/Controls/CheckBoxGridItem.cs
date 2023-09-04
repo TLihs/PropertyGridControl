@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using PropertyGridControl.Base;
 
-namespace PropertyGridControl.Base
+namespace PropertyGridControl.Controls
 {
-    public class BaseCheckBoxGridItem : BaseTypedGridItem<bool, CheckBox, BaseCheckBoxGridItem>
+    public class CheckBoxGridItem : BaseTypedGridItem<bool, CheckBox, CheckBoxGridItem>
     {
-        public BaseCheckBoxGridItem() : base($"CheckBoxGridItem{(Items.Count > 0 ? (Items.Count + 1).ToString() : string.Empty)}", false)
+        public CheckBoxGridItem() : base($"CheckBoxGridItem{(Items.Count > 0 ? (Items.Count + 1).ToString() : string.Empty)}")
         {
 
         }

@@ -369,11 +369,115 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty LabelWidthProperty =
-            DependencyProperty.RegisterAttached("LabelWidth", typeof(double), typeof(GridControl), new PropertyMetadata(50d));
-        public double LabelWidth
+            DependencyProperty.RegisterAttached("LabelWidth", typeof(GridLength), typeof(GridControl), new PropertyMetadata(new GridLength(0d, GridUnitType.Star)));
+        public GridLength LabelWidth
         {
-            get => (double)GetValue(LabelWidthProperty);
+            get => (GridLength)GetValue(LabelWidthProperty);
             set => SetValue(LabelWidthProperty, value);
+        }
+
+        public static readonly DependencyProperty ContentWidthProperty =
+            DependencyProperty.RegisterAttached("ContentWidth", typeof(GridLength), typeof(GridControl), new PropertyMetadata(new GridLength(0d, GridUnitType.Star)));
+        public GridLength ContentWidth
+        {
+            get => (GridLength)GetValue(ContentWidthProperty);
+            set => SetValue(ContentWidthProperty, value);
+        }
+
+        public static readonly DependencyProperty PropertyMarginProperty =
+            DependencyProperty.RegisterAttached("PropertyMargin", typeof(Thickness), typeof(GridControl), new PropertyMetadata(new Thickness(0d)));
+        public Thickness PropertyMargin
+        {
+            get => (Thickness)GetValue(PropertyMarginProperty);
+            set => SetValue(PropertyMarginProperty, value);
+        }
+
+        public static readonly DependencyProperty PropertyHeightProperty =
+            DependencyProperty.RegisterAttached("PropertyHeight", typeof(double), typeof(GridControl), new PropertyMetadata(30d));
+        public double PropertyHeight
+        {
+            get => (double)GetValue(PropertyHeightProperty);
+            set => SetValue(PropertyHeightProperty, value);
+        }
+
+        public static readonly DependencyProperty ContentBackgroundProperty =
+            DependencyProperty.RegisterAttached("ContentBackground", typeof(Brush), typeof(GridControl), new PropertyMetadata(Brushes.White));
+        public Brush ContentBackground
+        {
+            get => (Brush)GetValue(ContentBackgroundProperty);
+            set => SetValue(ContentBackgroundProperty, value);
+        }
+
+        public static readonly DependencyProperty ContentForegroundProperty =
+            DependencyProperty.RegisterAttached("ContentForeground", typeof(Brush), typeof(GridControl), new PropertyMetadata(Brushes.Black));
+        public Brush ContentForeground
+        {
+            get => (Brush)GetValue(ContentForegroundProperty);
+            set => SetValue(ContentForegroundProperty, value);
+        }
+
+        public static readonly DependencyProperty ContentBorderBrushProperty =
+            DependencyProperty.RegisterAttached("ContentBorderBrush", typeof(Brush), typeof(GridControl), new PropertyMetadata(Brushes.Gray));
+        public Brush ContentBorderBrush
+        {
+            get => (Brush)GetValue(ContentBorderBrushProperty);
+            set => SetValue(ContentBorderBrushProperty, value);
+        }
+
+        public static readonly DependencyProperty ContentBorderThicknessProperty =
+            DependencyProperty.RegisterAttached("ContentBorderThickness", typeof(Thickness), typeof(GridControl), new PropertyMetadata(new Thickness(0d)));
+        public Thickness ContentBorderThickness
+        {
+            get => (Thickness)GetValue(ContentBorderThicknessProperty);
+            set => SetValue(ContentBorderThicknessProperty, value);
+        }
+
+        public static readonly DependencyProperty ContentFontSizeProperty =
+            DependencyProperty.RegisterAttached("ContentFontSize", typeof(double), typeof(GridControl), new PropertyMetadata(12d));
+        public double ContentFontSize
+        {
+            get => (double)GetValue(ContentFontSizeProperty);
+            set => SetValue(ContentFontSizeProperty, value);
+        }
+
+        public static readonly DependencyProperty ContentFontWeightProperty =
+            DependencyProperty.RegisterAttached("ContentFontWeight", typeof(FontWeight), typeof(GridControl), new PropertyMetadata(FontWeights.Normal));
+        public FontWeight ContentFontWeight
+        {
+            get => (FontWeight)GetValue(ContentFontWeightProperty);
+            set => SetValue(ContentFontWeightProperty, value);
+        }
+
+        public static readonly DependencyProperty ContentFontFamilyProperty =
+            DependencyProperty.RegisterAttached("ContentFontFamily", typeof(FontFamily), typeof(GridControl), new PropertyMetadata(new FontFamily("Segoe UI")));
+        public FontFamily ContentFontFamily
+        {
+            get => (FontFamily)GetValue(ContentFontFamilyProperty);
+            set => SetValue(ContentFontFamilyProperty, value);
+        }
+
+        public static readonly DependencyProperty ContentFontStretchProperty =
+            DependencyProperty.RegisterAttached("ContentFontStretch", typeof(FontStretch), typeof(GridControl), new PropertyMetadata(FontStretches.Normal));
+        public FontStretch ContentFontStretch
+        {
+            get => (FontStretch)GetValue(ContentFontStretchProperty);
+            set => SetValue(ContentFontStretchProperty, value);
+        }
+
+        public static readonly DependencyProperty ContentFontStyleProperty =
+            DependencyProperty.RegisterAttached("ContentFontStyle", typeof(FontStyle), typeof(GridControl), new PropertyMetadata(FontStyles.Normal));
+        public FontStyle ContentFontStyle
+        {
+            get => (FontStyle)GetValue(ContentFontStyleProperty);
+            set => SetValue(ContentFontStyleProperty, value);
+        }
+
+        public static readonly DependencyProperty ContentTextProperty =
+            DependencyProperty.RegisterAttached("ContentText", typeof(string), typeof(GridControl), new PropertyMetadata(default(string)));
+        public string ContentText
+        {
+            get => (string)GetValue(ContentTextProperty);
+            set => SetValue(ContentTextProperty, value);
         }
 
         static GridControl()
@@ -384,33 +488,6 @@ namespace PropertyGridControl
         public GridControl()
         {
 
-        }
-
-        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (e.Property == LabelFontSizeProperty)
-                foreach (BaseGridItem item in Children)
-                    item.LabelFontSize = (double)e.NewValue;
-            else if (e.Property == LabelFontFamilyProperty)
-                foreach (BaseGridItem item in Children)
-                    item.LabelFontFamily = (FontFamily)e.NewValue;
-            else if (e.Property == LabelFontStretchProperty)
-                foreach (BaseGridItem item in Children)
-                    item.LabelFontStretch = (FontStretch)e.NewValue;
-            else if (e.Property == LabelFontStyleProperty)
-                foreach (BaseGridItem item in Children)
-                    item.LabelFontStyle = (FontStyle)e.NewValue;
-            else if (e.Property == LabelFontWeightProperty)
-                foreach (BaseGridItem item in Children)
-                    item.LabelFontWeight = (FontWeight)e.NewValue;
-            else if (e.Property == PropertyForegroundProperty)
-                foreach (BaseGridItem item in Children)
-                    item.Foreground = (Brush)e.NewValue;
-            else if (e.Property == PropertyBackgroundProperty)
-                foreach (BaseGridItem item in Children)
-                    item.Background = (Brush)e.NewValue;
-
-            base.OnPropertyChanged(e);
         }
     }
 }
