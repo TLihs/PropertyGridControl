@@ -15,23 +15,5 @@ namespace PropertyGridControl.Controls
         {
 
         }
-
-        protected override void SetBaseGridItemBindings()
-        {
-            base.SetBaseGridItemBindings();
-
-            SetBinding("ContentFontSize", this, ValueControl, ComboBox.FontSizeProperty);
-            SetBinding("ContentFontWeight", this, ValueControl, ComboBox.FontWeightProperty);
-            SetBinding("ContentFontFamily", this, ValueControl, ComboBox.FontFamilyProperty);
-            SetBinding("ContentFontStretch", this, ValueControl, ComboBox.FontStretchProperty);
-            SetBinding("ContentFontStyle", this, ValueControl, ComboBox.FontStyleProperty);
-            SetBinding("ContentBackground", this, ValueControl, ComboBox.BackgroundProperty);
-            SetBinding("ContentForeground", this, ValueControl, ComboBox.ForegroundProperty);
-        }
-
-        public override void OnValueChanged(object sender, string e)
-        {
-            // throw new NotImplementedException();
-        }
     }
 }

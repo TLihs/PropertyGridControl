@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,12 +13,7 @@ namespace PropertyGridControl.Controls
     {
         public TextBoxGridItem() : base($"TextBoxGridItem{(Items.Count > 0 ? (Items.Count + 1).ToString() : string.Empty)}")
         {
-
-        }
-
-        public override void OnValueChanged(object sender, string e)
-        {
-            // throw new NotImplementedException();
+            Debug.Print($"TextBoxGridItem::TextBoxGridItem()");
         }
     }
 }

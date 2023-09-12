@@ -14,10 +14,5 @@ namespace PropertyGridControl.Controls
         {
 
         }
-
-        public override void OnValueChanged(object sender, bool e)
-        {
-            // throw new NotImplementedException();
-        }
     }
 }

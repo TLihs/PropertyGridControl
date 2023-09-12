@@ -25,11 +25,6 @@ namespace PropertyGridControl.Controls
             Button_PathSelection.Click += OnButtonPathSelection_Click;
         }
 
-        public override void OnValueChanged(object sender, string e)
-        {
-            // throw new NotImplementedException();
-        }
-
         protected virtual void OnButtonPathSelection_Click(object sender, RoutedEventArgs e)
         {
 
