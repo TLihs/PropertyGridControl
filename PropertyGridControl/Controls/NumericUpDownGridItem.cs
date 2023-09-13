@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -215,10 +210,7 @@ namespace PropertyGridControl.Controls
 
             int currentcaretpos = ValueControl.CaretIndex;
             bool focused = ValueControl.IsFocused;
-
-            Debug.Print($"text: '{text}'");
             text = text.Replace('.', _decimalSeparationChar).Replace(',', _decimalSeparationChar);
-            Debug.Print($"text: '{text}'");
 
             if (text.Contains(_decimalSeparationChar))
             {
