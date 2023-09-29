@@ -4,11 +4,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using PropertyGridControl.Base;
+using System.Collections.Generic;
 
 namespace PropertyGridControl.Controls
 {
     public class TextBoxGridItem : BaseTextTypedGridItem<string, TextBox, TextBoxGridItem>
     {
+        private readonly HashSet<char> _allowedChars = new HashSet<char>();
+        private bool _isFiltering = true;
+
         public event EventHandler<string> CharFilterChanged;
         public static readonly DependencyProperty CharFilterProperty =
             DependencyProperty.RegisterAttached("CharFilter", typeof(string), typeof(TextBoxGridItem), new PropertyMetadata(string.Empty));
@@ -17,9 +21,9 @@ namespace PropertyGridControl.Controls
             get => (string)GetValue(CharFilterProperty);
             set
             {
-                // Since floating point with double precision only support an exact accuracy up to 15 digits, we reduce it to 12.
                 SetValue(CharFilterProperty, value);
                 CharFilterChanged?.Invoke(this, value);
+                InitializeAllowedChars(value);
             }
         }
 
@@ -30,31 +34,33 @@ namespace PropertyGridControl.Controls
             ValueControl.PreviewTextInput += OnTextBoxContent_PreviewTextInput;
         }
 
+        private void InitializeAllowedChars(string charFilter)
+        {
+            _allowedChars.Clear();
+            foreach (char c in charFilter)
+                _allowedChars.Add(c);
+        }
+
         public virtual void OnTextBoxContent_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            string text = e.Text;
-            string charfilter = CharFilter;
-            bool inputchanged = false;
-
-            foreach (char c in charfilter)
+            if (_isFiltering)
             {
-                for (int index = text.Length - 1; index >= 0; index--)
-                {
-                    if (text[index] == c)
-                    {
-                        text = text.Remove(index, 1);
-                        if (!inputchanged)
-                            inputchanged = true;
-                    }
-                }
+                e.Handled = true;
+                return;
             }
 
-            if (inputchanged)
+            string text = e.Text;
+            string charfilter = CharFilter;
+
+            foreach (char c in charfilter)
+                text = text.Replace(c.ToString(), string.Empty);
+
+            if (!string.IsNullOrEmpty(text))
             {
-                ValueControl.PreviewTextInput -= OnTextBoxContent_PreviewTextInput;
-                ValueControl.Text.Insert(ValueControl.CaretIndex, text);
+                _isFiltering = true;
+                ValueControl.Text = ValueControl.Text.Insert(ValueControl.CaretIndex, e.Text);
                 ValueControl.CaretIndex += text.Length;
-                ValueControl.PreviewTextInput += OnTextBoxContent_PreviewTextInput;
+                _isFiltering = false;
                 e.Handled = true;
             }
         }

@@ -113,7 +113,7 @@ namespace PropertyGridControl.Controls
             Button_DecreaseValue.Click += OnButtonDecreaseValue_Click;
 
             ValueControl.PreviewKeyDown += OnTextBoxContent_PreviewKeyDown;
-            ValueControl.TextChanged += OnTextBoxContent_TextChanged;
+            // ValueControl.TextChanged += OnTextBoxContent_TextChanged;
 
             ValueChanged += OnValueChanged;
         }
@@ -194,80 +194,136 @@ namespace PropertyGridControl.Controls
             ValueControl.CaretIndex = currentcaretpos;
         }
 
-        protected virtual void OnTextBoxContent_TextChanged(object sender, TextChangedEventArgs e)
+        protected virtual void OnTextBoxContent_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Debug.Print($"OnTextBoxContent_TextChanged(sender, {ValueControl.Text})");
+            string currentText = ValueControl.Text;
+            int currentCaretPos = ValueControl.CaretIndex;
 
-            if (e.Handled || InputHandled)
+            string inputText = e.Text;
+
+            // Check if the input is a valid character
+            if (!IsValidInputCharacter(inputText))
             {
-                InputHandled = false;
+                e.Handled = true;
                 return;
             }
 
-            string text = ValueControl.Text;
-            if (text == Value.ToString())
-                return;
+            // Determine if the input contains a decimal separator
+            bool containsDecimalSeparator = currentText.Contains(_decimalSeparationChar.ToString());
 
-            int currentcaretpos = ValueControl.CaretIndex;
-            bool focused = ValueControl.IsFocused;
-            text = text.Replace('.', _decimalSeparationChar).Replace(',', _decimalSeparationChar);
+            // Construct the new text by inserting the input at the caret position
+            string newText = currentText.Substring(0, currentCaretPos) + inputText +
+                             currentText.Substring(currentCaretPos + ValueControl.SelectionLength);
 
-            if (text.Contains(_decimalSeparationChar))
+            // Normalize the text to use the current culture's decimal separator
+            newText = newText.Replace('.', _decimalSeparationChar).Replace(',', _decimalSeparationChar);
+
+            if (double.TryParse(newText, out double parsedValue))
             {
-                if (text.Count(character => character == _decimalSeparationChar) > 1)
+                // Ensure the parsed value is within bounds
+                parsedValue = Math.Max(MinValue, Math.Min(MaxValue, parsedValue));
+
+                // If the input contained a decimal separator, ensure it's retained
+                if (containsDecimalSeparator)
                 {
-                    bool firstdecimalfound = false;
-                    string temptext = "";
-                    foreach (char c in text)
+                    string[] parts = newText.Split(_decimalSeparationChar);
+                    if (parts.Length == 2)
                     {
-                        if (!firstdecimalfound && c == _decimalSeparationChar)
-                        {
-                            firstdecimalfound = true;
-                            temptext += c;
-                        }
-                        else if (c != _decimalSeparationChar)
-                        {
-                            temptext += c;
-                        }
+                        int precision = Math.Min(parts[1].Length, Precision);
+                        newText = parts[0] + _decimalSeparationChar + parts[1].Substring(0, precision);
                     }
-                    text = temptext;
                 }
 
-                string[] splittedvalue = text.Split(_decimalSeparationChar);
-                splittedvalue[1] = splittedvalue[1].Substring(0, Math.Min(Precision, splittedvalue[1].Length));
-                if (splittedvalue[1].Length > 0)
-                    text = string.Join(_decimalSeparationChar.ToString(), splittedvalue);
-                else if (focused)
-                    text = splittedvalue[0] + _decimalSeparationChar;
+                InputHandled = true;
+                Value = parsedValue;
             }
 
-            if (double.TryParse(text, out double parsedvalue))
-            {
-                if (parsedvalue < MinValue)
-                {
-                    parsedvalue = MinValue;
-                    text = parsedvalue.ToString();
-                }
-                else if (parsedvalue > MaxValue)
-                {
-                    parsedvalue = MaxValue;
-                    text = parsedvalue.ToString();
-                }
-
-                if (Value != parsedvalue)
-                {
-                    InputHandled = true;
-                    Value = parsedvalue;
-                }
-            }
-
-            if (ValueControl.Text != text)
-            {
-                ValueControl.Text = text;
-                ValueControl.CaretIndex = currentcaretpos;
-            }
+            ValueControl.Text = newText;
+            ValueControl.CaretIndex = currentCaretPos + inputText.Length;
 
             e.Handled = true;
         }
+
+        private bool IsValidInputCharacter(string input)
+        {
+            // Only allow valid numeric and formatting characters
+            return NumericSymbols.IsMatch(input);
+        }
+
+        //protected virtual void OnTextBoxContent_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    Debug.Print($"OnTextBoxContent_TextChanged(sender, {ValueControl.Text})");
+
+        //    if (e.Handled || InputHandled)
+        //    {
+        //        InputHandled = false;
+        //        return;
+        //    }
+
+        //    string text = ValueControl.Text;
+        //    if (text == Value.ToString())
+        //        return;
+
+        //    int currentcaretpos = ValueControl.CaretIndex;
+        //    bool focused = ValueControl.IsFocused;
+        //    text = text.Replace('.', _decimalSeparationChar).Replace(',', _decimalSeparationChar);
+
+        //    if (text.Contains(_decimalSeparationChar))
+        //    {
+        //        if (text.Count(character => character == _decimalSeparationChar) > 1)
+        //        {
+        //            bool firstdecimalfound = false;
+        //            string temptext = "";
+        //            foreach (char c in text)
+        //            {
+        //                if (!firstdecimalfound && c == _decimalSeparationChar)
+        //                {
+        //                    firstdecimalfound = true;
+        //                    temptext += c;
+        //                }
+        //                else if (c != _decimalSeparationChar)
+        //                {
+        //                    temptext += c;
+        //                }
+        //            }
+        //            text = temptext;
+        //        }
+
+        //        string[] splittedvalue = text.Split(_decimalSeparationChar);
+        //        splittedvalue[1] = splittedvalue[1].Substring(0, Math.Min(Precision, splittedvalue[1].Length));
+        //        if (splittedvalue[1].Length > 0)
+        //            text = string.Join(_decimalSeparationChar.ToString(), splittedvalue);
+        //        else if (focused)
+        //            text = splittedvalue[0] + _decimalSeparationChar;
+        //    }
+
+        //    if (double.TryParse(text, out double parsedvalue))
+        //    {
+        //        if (parsedvalue < MinValue)
+        //        {
+        //            parsedvalue = MinValue;
+        //            text = parsedvalue.ToString();
+        //        }
+        //        else if (parsedvalue > MaxValue)
+        //        {
+        //            parsedvalue = MaxValue;
+        //            text = parsedvalue.ToString();
+        //        }
+
+        //        if (Value != parsedvalue)
+        //        {
+        //            InputHandled = true;
+        //            Value = parsedvalue;
+        //        }
+        //    }
+
+        //    if (ValueControl.Text != text)
+        //    {
+        //        ValueControl.Text = text;
+        //        ValueControl.CaretIndex = currentcaretpos;
+        //    }
+
+        //    e.Handled = true;
+        //}
     }
 }
