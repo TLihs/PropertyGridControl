@@ -13,14 +13,9 @@ namespace PropertyGridControl.Controls
         protected override void OnButtonPathSelection_Click(object sender, RoutedEventArgs e)
         {
             PathSelectionDialog.EnsureFileExists = false;
-            PathSelectionDialog.EnsurePathExists = EnsurePathExists;
-            PathSelectionDialog.EnsureValidNames = EnsureValidNames;
-            PathSelectionDialog.Multiselect = Multiselect;
-            PathSelectionDialog.NavigateToShortcut = NavigateToShortcut;
-            PathSelectionDialog.RestoreDirectory = RestoreDirectory;
-            PathSelectionDialog.ShowPlacesList = ShowPlacesList;
             PathSelectionDialog.IsFolderPicker = true;
-            PathSelectionDialog.Title = DialogTitle;
+
+            base.OnButtonPathSelection_Click(sender, e);
         }
     }
 }

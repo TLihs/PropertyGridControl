@@ -230,8 +230,6 @@ namespace PropertyGridControl.Base
             set
             {
                 T1 currentvalue = (T1)GetValue(ValueProperty);
-                Debug.Print($"BaseTypedGridItem::Value -> Current value: {value}");
-                Debug.Print($"BaseTypedGridItem::Value -> New value: {value}");
                 if (!value.Equals(currentvalue) && value != null)
                 {
                     SetValue(ValueProperty, value);
