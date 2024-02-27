@@ -5,6 +5,7 @@ using PropertyGridControl.Base;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Diagnostics;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace PropertyGridControl.Controls
 {
@@ -13,25 +14,29 @@ namespace PropertyGridControl.Controls
         // This regex is not sufficient, since filters are added via CommonFileDialogFilter()
         // Input should be like: "All Files|*|Images|jpg;bmp|Text Files|txt;doc;docx;docm||"
         // ^([a-zA-Z0-9 ]+(\(\*\.[a-zA-Z0-9*]*\))\;)*$ <- not finished (https://regex101.com/r/yBd6Rj/1)
-        public readonly Regex ExtensionFilterString = new Regex("^(?'Filter'(?:[^\\|]+)\\|((?:[a-zA-Z0-9]+)?|(?:||$))(?:(?:;((?:[a-zA-Z0-9]+)))+|(\\*)?)\\|)+\\|$");
+        public readonly Regex ExtensionFilterString = new Regex("^((?'Name'([^\\|]+))\\|((?'Filter'([^\\|]+))\\|))+\\|$");
 
         public event EventHandler<string> ExtensionFilterChanged;
         public static readonly DependencyProperty ExtensionFilterProperty =
-            DependencyProperty.RegisterAttached("ExtensionFilter", typeof(string), typeof(FilePathSelectionGridItem), new PropertyMetadata(string.Empty));
+            DependencyProperty.RegisterAttached("ExtensionFilter", typeof(string),
+                typeof(GridControl), new PropertyMetadata(string.Empty));
         public string ExtensionFilter
         {
             get => (string)GetValue(ExtensionFilterProperty);
             set
             {
                 if (!string.IsNullOrEmpty(value) && !ExtensionFilterString.IsMatch(value))
-                    throw new ArgumentException("Filter string does not match the predefined format (format is based on Windows FileDialog)");
+                    throw new ArgumentException("Filter string does not match the " +
+                        "predefined format (i.e. 'Text Files|txt;doc||')");
+                SetExtensionFilter(value);
                 SetValue(ExtensionFilterProperty, value);
                 ExtensionFilterChanged?.Invoke(this, value);
             }
         }
         public event EventHandler<bool> EnsureFileExistsChanged;
         public static readonly DependencyProperty EnsureFileExistsProperty =
-            DependencyProperty.RegisterAttached("EnsureFileExists", typeof(bool), typeof(FilePathSelectionGridItem), new PropertyMetadata(true));
+            DependencyProperty.RegisterAttached("EnsureFileExists", typeof(bool),
+                typeof(GridControl), new PropertyMetadata(true));
         public bool EnsureFileExists
         {
             get => (bool)GetValue(EnsureFileExistsProperty);
@@ -42,13 +47,15 @@ namespace PropertyGridControl.Controls
             }
         }
 
-        public FilePathSelectionGridItem() : base($"FilePathSelectionGridItem{(Items.Count > 0 ? (Items.Count + 1).ToString() : string.Empty)}")
+        public FilePathSelectionGridItem() : 
+            base($"FilePathSelectionGridItem{(Items.Count > 0 ? (Items.Count + 1).ToString() : string.Empty)}")
         {
 
         }
 
         private bool SetExtensionFilter(string filterstring)
         {
+            Debug.Print($"SetExtensionFilter('{filterstring}')");
             PathSelectionDialog.Filters.Clear();
 
             if (string.IsNullOrEmpty(filterstring))
@@ -58,29 +65,28 @@ namespace PropertyGridControl.Controls
                 return false;
 
             CommonFileDialogFilter filter;
-            string[] splittedentry;
-            string filtername;
-            string extensionstext;
-            string[] extensions;
-            foreach (Group group in ExtensionFilterString.Matches(filterstring)[0].Groups)
-            {
-                if (group.Name == "Filter")
-                {
+            List<string> filternames = new List<string>();
+            List<string> extensions = new List<string>();
+            foreach (Match match in ExtensionFilterString.Matches(filterstring))
+                foreach (Group group in match.Groups)
                     foreach (Capture capture in group.Captures)
-                    {
-                        splittedentry = capture.Value.Split('|');
-                        filtername = splittedentry[0];
-                        extensionstext = splittedentry[1];
-                        extensions = extensionstext.Split(';');
+                        if (group.Name == "Name")
+                            filternames.Add(capture.Value);
+                        else if (group.Name == "Filter")
+                            extensions.Add(capture.Value);
 
-                        filter = new CommonFileDialogFilter();
-                        filter.DisplayName = filtername;
-                        foreach (string ext in extensions)
-                            filter.Extensions.Add(ext);
+            for (int filterindex = 0; filterindex < filternames.Count; filterindex++)
+            {
+                filter = new CommonFileDialogFilter
+                {
+                    DisplayName = filternames[filterindex]
+                };
 
-                        PathSelectionDialog.Filters.Add(filter);
-                    }
-                }
+                string[] filterextensions = extensions[filterindex].Split(';');
+                foreach (string extension in filterextensions)
+                    filter.Extensions.Add(extension);
+
+                PathSelectionDialog.Filters.Add(filter);
             }
 
             return true;

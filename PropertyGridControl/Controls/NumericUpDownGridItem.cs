@@ -22,7 +22,8 @@ namespace PropertyGridControl.Controls
             Key.A, Key.C, Key.V
         };
 
-        private readonly char _decimalSeparationChar = Convert.ToChar(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+        private readonly char _decimalSeparationChar =
+            Convert.ToChar(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
         
         public readonly Regex NumericString = new Regex("^-*\\d+[\\.,]*\\d+$");
         public readonly Regex NumericSymbols = new Regex("[-\\d\\.,]");
@@ -32,7 +33,8 @@ namespace PropertyGridControl.Controls
 
         public event EventHandler<double> MinValueChanged;
         public static readonly DependencyProperty MinValueProperty =
-            DependencyProperty.RegisterAttached("MinValue", typeof(double), typeof(NumericUpDownGridItem), new PropertyMetadata(double.MinValue));
+            DependencyProperty.RegisterAttached("MinValue", typeof(double),
+                typeof(NumericUpDownGridItem), new PropertyMetadata(double.MinValue));
         public double MinValue
         {
             get => (double)GetValue(MinValueProperty);
@@ -45,7 +47,8 @@ namespace PropertyGridControl.Controls
 
         public event EventHandler<double> MaxValueChanged;
         public static readonly DependencyProperty MaxValueProperty =
-            DependencyProperty.RegisterAttached("MaxValue", typeof(double), typeof(NumericUpDownGridItem), new PropertyMetadata(double.MaxValue));
+            DependencyProperty.RegisterAttached("MaxValue", typeof(double),
+                typeof(NumericUpDownGridItem), new PropertyMetadata(double.MaxValue));
         public double MaxValue
         {
             get => (double)GetValue(MaxValueProperty);
@@ -58,7 +61,8 @@ namespace PropertyGridControl.Controls
 
         public event EventHandler<double> IncrementChanged;
         public static readonly DependencyProperty IncrementProperty =
-            DependencyProperty.RegisterAttached("Increment", typeof(double), typeof(NumericUpDownGridItem), new PropertyMetadata(1d));
+            DependencyProperty.RegisterAttached("Increment", typeof(double),
+                typeof(NumericUpDownGridItem), new PropertyMetadata(1d));
         public double Increment
         {
             get => (double)GetValue(IncrementProperty);
@@ -73,7 +77,8 @@ namespace PropertyGridControl.Controls
 
         public event EventHandler<int> PrecisionChanged;
         public static readonly DependencyProperty PrecisionProperty =
-            DependencyProperty.RegisterAttached("Precision", typeof(int), typeof(NumericUpDownGridItem), new PropertyMetadata(0));
+            DependencyProperty.RegisterAttached("Precision", typeof(int),
+                typeof(NumericUpDownGridItem), new PropertyMetadata(0));
         public int Precision
         {
             get => (int)GetValue(PrecisionProperty);
@@ -90,7 +95,8 @@ namespace PropertyGridControl.Controls
             }
         }
 
-        public NumericUpDownGridItem() : base($"NumericUpDownGridItem{(Items.Count > 0 ? (Items.Count + 1).ToString() : string.Empty)}")
+        public NumericUpDownGridItem() :
+            base($"NumericUpDownGridItem{(Items.Count > 0 ? (Items.Count + 1).ToString() : string.Empty)}")
         {
             ValueControlGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1d, GridUnitType.Star) });
             ValueControlGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(30d, GridUnitType.Pixel) });
@@ -113,7 +119,7 @@ namespace PropertyGridControl.Controls
             Button_DecreaseValue.Click += OnButtonDecreaseValue_Click;
 
             ValueControl.PreviewKeyDown += OnTextBoxContent_PreviewKeyDown;
-            // ValueControl.TextChanged += OnTextBoxContent_TextChanged;
+            ValueControl.PreviewTextInput += OnTextBoxContent_PreviewTextInput;
 
             ValueChanged += OnValueChanged;
         }
@@ -136,14 +142,12 @@ namespace PropertyGridControl.Controls
 
         protected virtual void OnButtonIncreaseValue_Click(object sender, RoutedEventArgs e)
         {
-            Debug.Print($"OnButtonIncreaseValue_Click(sender, e) -> base.Value: '{base.Value}', Value: '{Value}', Increment '{Increment}'");
             InputHandled = false;
             Value += Increment;
         }
 
         protected virtual void OnButtonDecreaseValue_Click(object sender, RoutedEventArgs e)
         {
-            Debug.Print($"OnButtonDecreaseValue_Click(sender, e) -> base.Value: '{base.Value}', Value: '{Value}', Increment '{Increment}'");
             InputHandled = false;
             Value -= Increment;
         }
