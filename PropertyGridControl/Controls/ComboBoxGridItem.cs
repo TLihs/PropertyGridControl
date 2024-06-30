@@ -1,11 +1,11 @@
-﻿using System;
+﻿using PropertyGridControl.Base;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using PropertyGridControl.Base;
 
 namespace PropertyGridControl.Controls
 {

@@ -2,13 +2,13 @@
 using PropertyGridControl.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows;
-using System.Diagnostics;
+using System.Windows.Controls;
 
 namespace PropertyGridControl.Base
 {
@@ -18,7 +18,7 @@ namespace PropertyGridControl.Base
 
         protected CommonOpenFileDialog PathSelectionDialog;
 
-        public event EventHandler<bool> EnsurePathExistsChanged;
+        public event EventHandler<bool>? EnsurePathExistsChanged;
         public static readonly DependencyProperty EnsurePathExistsProperty =
             DependencyProperty.RegisterAttached("EnsurePathExists", typeof(bool),
                 typeof(BasePathSelectionGridItem), new PropertyMetadata(true));
@@ -31,7 +31,7 @@ namespace PropertyGridControl.Base
                 EnsurePathExistsChanged?.Invoke(this, value);
             }
         }
-        public event EventHandler<bool> EnsureValidNamesChanged;
+        public event EventHandler<bool>? EnsureValidNamesChanged;
         public static readonly DependencyProperty EnsureValidNamesProperty =
             DependencyProperty.RegisterAttached("EnsureValidNames", typeof(bool),
                 typeof(BasePathSelectionGridItem), new PropertyMetadata(true));
@@ -44,7 +44,7 @@ namespace PropertyGridControl.Base
                 EnsureValidNamesChanged?.Invoke(this, value);
             }
         }
-        public event EventHandler<bool> NavigateToShortcutChanged;
+        public event EventHandler<bool>? NavigateToShortcutChanged;
         public static readonly DependencyProperty NavigateToShortcutProperty =
             DependencyProperty.RegisterAttached("NavigateToShortcut", typeof(bool),
                 typeof(BasePathSelectionGridItem), new PropertyMetadata(true));
@@ -57,7 +57,7 @@ namespace PropertyGridControl.Base
                 NavigateToShortcutChanged?.Invoke(this, value);
             }
         }
-        public event EventHandler<bool> RestoreDirectoryChanged;
+        public event EventHandler<bool>? RestoreDirectoryChanged;
         public static readonly DependencyProperty RestoreDirectoryProperty =
             DependencyProperty.RegisterAttached("RestoreDirectory", typeof(bool),
                 typeof(BasePathSelectionGridItem), new PropertyMetadata(true));
@@ -70,7 +70,7 @@ namespace PropertyGridControl.Base
                 RestoreDirectoryChanged?.Invoke(this, value);
             }
         }
-        public event EventHandler<bool> ShowPlacesListChanged;
+        public event EventHandler<bool>? ShowPlacesListChanged;
         public static readonly DependencyProperty ShowPlacesListProperty =
             DependencyProperty.RegisterAttached("ShowPlacesList", typeof(bool),
                 typeof(BasePathSelectionGridItem), new PropertyMetadata(true));
@@ -83,7 +83,7 @@ namespace PropertyGridControl.Base
                 ShowPlacesListChanged?.Invoke(this, value);
             }
         }
-        public event EventHandler<bool> MultiselectChanged;
+        public event EventHandler<bool>? MultiselectChanged;
         public static readonly DependencyProperty MultiselectProperty =
             DependencyProperty.RegisterAttached("Multiselect", typeof(bool),
                 typeof(BasePathSelectionGridItem), new PropertyMetadata(true));
@@ -96,7 +96,7 @@ namespace PropertyGridControl.Base
                 MultiselectChanged?.Invoke(this, value);
             }
         }
-        public event EventHandler<string> DialogTitleChanged;
+        public event EventHandler<string>? DialogTitleChanged;
         public static readonly DependencyProperty DialogTitleProperty =
             DependencyProperty.RegisterAttached("DialogTitle", typeof(string),
                 typeof(BasePathSelectionGridItem), new PropertyMetadata("Title"));

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using System.Windows;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using PropertyGridControl.Base;
-using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace PropertyGridControl.Controls
 {
@@ -16,7 +16,7 @@ namespace PropertyGridControl.Controls
         // ^([a-zA-Z0-9 ]+(\(\*\.[a-zA-Z0-9*]*\))\;)*$ <- not finished (https://regex101.com/r/yBd6Rj/1)
         public readonly Regex ExtensionFilterString = new Regex("^((?'Name'([^\\|]+))\\|((?'Filter'([^\\|]+))\\|))+\\|$");
 
-        public event EventHandler<string> ExtensionFilterChanged;
+        public event EventHandler<string>? ExtensionFilterChanged;
         public static readonly DependencyProperty ExtensionFilterProperty =
             DependencyProperty.RegisterAttached("ExtensionFilter", typeof(string),
                 typeof(GridControl), new PropertyMetadata(string.Empty));
@@ -33,7 +33,7 @@ namespace PropertyGridControl.Controls
                 ExtensionFilterChanged?.Invoke(this, value);
             }
         }
-        public event EventHandler<bool> EnsureFileExistsChanged;
+        public event EventHandler<bool>? EnsureFileExistsChanged;
         public static readonly DependencyProperty EnsureFileExistsProperty =
             DependencyProperty.RegisterAttached("EnsureFileExists", typeof(bool),
                 typeof(GridControl), new PropertyMetadata(true));
@@ -47,7 +47,7 @@ namespace PropertyGridControl.Controls
             }
         }
 
-        public FilePathSelectionGridItem() : 
+        public FilePathSelectionGridItem() :
             base($"FilePathSelectionGridItem{(Items.Count > 0 ? (Items.Count + 1).ToString() : string.Empty)}")
         {
 
@@ -68,7 +68,7 @@ namespace PropertyGridControl.Controls
             List<string> filternames = new List<string>();
             List<string> extensions = new List<string>();
             foreach (Match match in ExtensionFilterString.Matches(filterstring))
-                foreach (Group group in match.Groups)
+                foreach (Group group in match.Groups.Cast<Group>())
                     foreach (Capture capture in group.Captures)
                         if (group.Name == "Name")
                             filternames.Add(capture.Value);

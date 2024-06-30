@@ -17,26 +17,27 @@ namespace PropertyGridControl.Base
     // property from within the OnPropertyChanged function (or any custom appended function to the PropertyChanged event).
 
     public abstract class BaseTypedGridItem<T1, T2, T3> : Grid
+        where T1 : notnull
         where T2 : Control, new()
         where T3 : BaseTypedGridItem<T1, T2, T3>
     {
-        public static List<T3> Items = new List<T3>();
+        public static List<T3> Items = [];
 
-        private string _name;
-        private Label _nameLabel = new Label();
-        private ColumnDefinition _columnDefinitionLeftMargin = new ColumnDefinition() { Width = new GridLength(0d, GridUnitType.Pixel) };
-        private ColumnDefinition _columnDefinitionRightMargin = new ColumnDefinition() { Width = new GridLength(0d, GridUnitType.Pixel) };
-        private RowDefinition _rowDefinitionTopMargin = new RowDefinition() { Height = new GridLength(0d, GridUnitType.Pixel) };
-        private RowDefinition _rowDefinitionBottomMargin = new RowDefinition() { Height = new GridLength(0d, GridUnitType.Pixel) };
-        private ColumnDefinition _columnDefinitionLabel = new ColumnDefinition() { Width = new GridLength(50d, GridUnitType.Pixel) };
-        private ColumnDefinition _columnDefinitionValue = new ColumnDefinition() { Width = new GridLength(50d, GridUnitType.Pixel) };
-        private RowDefinition _rowDefinitionContent = new RowDefinition() { Height = new GridLength(1d, GridUnitType.Star) };
-        private GridControl _gridParent;
+        private string _name = string.Empty;
+        private Label _nameLabel = new();
+        private ColumnDefinition _columnDefinitionLeftMargin = new() { Width = new GridLength(0d, GridUnitType.Pixel) };
+        private ColumnDefinition _columnDefinitionRightMargin = new() { Width = new GridLength(0d, GridUnitType.Pixel) };
+        private RowDefinition _rowDefinitionTopMargin = new() { Height = new GridLength(0d, GridUnitType.Pixel) };
+        private RowDefinition _rowDefinitionBottomMargin = new() { Height = new GridLength(0d, GridUnitType.Pixel) };
+        private ColumnDefinition _columnDefinitionLabel = new() { Width = new GridLength(50d, GridUnitType.Pixel) };
+        private ColumnDefinition _columnDefinitionValue = new() { Width = new GridLength(50d, GridUnitType.Pixel) };
+        private RowDefinition _rowDefinitionContent = new() { Height = new GridLength(1d, GridUnitType.Star) };
+        private GridControl? _gridParent = null;
         private T1 _originalValue = default;
         private bool _originalValueSet = false;
         private bool _valueSet = false;
 
-        protected T2 _valueControl;
+        protected T2? _valueControl;
 
         public string PropertyName
         {
@@ -48,8 +49,8 @@ namespace PropertyGridControl.Base
             }
         }
 
-        public event EventHandler<GridControl> GridParentChanged;
-        public GridControl GridParent
+        public event EventHandler<GridControl>? GridParentChanged;
+        public GridControl? GridParent
         {
             get => _gridParent;
             private set
@@ -58,12 +59,13 @@ namespace PropertyGridControl.Base
                 {
                     _gridParent = value;
                     SetGridParentBindings();
-                    GridParentChanged?.Invoke(this, value);
+                    if (value != null)
+                        GridParentChanged?.Invoke(this, value);
                 }
             }
         }
 
-        public event EventHandler<double> LabelFontSizeChanged;
+        public event EventHandler<double>? LabelFontSizeChanged;
         public static readonly DependencyProperty LabelFontSizeProperty =
             DependencyProperty.RegisterAttached("LabelFontSize", typeof(double), typeof(T3), new PropertyMetadata(12d));
         public double LabelFontSize
@@ -76,7 +78,7 @@ namespace PropertyGridControl.Base
             }
         }
 
-        public event EventHandler<FontWeight> LabelFontWeightChanged;
+        public event EventHandler<FontWeight>? LabelFontWeightChanged;
         public static readonly DependencyProperty LabelFontWeightProperty =
             DependencyProperty.RegisterAttached("LabelFontWeight", typeof(FontWeight), typeof(T3), new PropertyMetadata(FontWeights.Normal));
         public FontWeight LabelFontWeight
@@ -89,7 +91,7 @@ namespace PropertyGridControl.Base
             }
         }
 
-        public event EventHandler<FontFamily> LabelFontFamilyChanged;
+        public event EventHandler<FontFamily>? LabelFontFamilyChanged;
         public static readonly DependencyProperty LabelFontFamilyProperty =
             DependencyProperty.RegisterAttached("LabelFontFamily", typeof(FontFamily), typeof(T3), new PropertyMetadata(new FontFamily("Segoe UI")));
         public FontFamily LabelFontFamily
@@ -102,7 +104,7 @@ namespace PropertyGridControl.Base
             }
         }
 
-        public event EventHandler<FontStretch> LabelFontStretchChanged;
+        public event EventHandler<FontStretch>? LabelFontStretchChanged;
         public static readonly DependencyProperty LabelFontStretchProperty =
             DependencyProperty.RegisterAttached("LabelFontStretch", typeof(FontStretch), typeof(T3), new PropertyMetadata(FontStretches.Normal));
         public FontStretch LabelFontStretch
@@ -115,7 +117,7 @@ namespace PropertyGridControl.Base
             }
         }
 
-        public event EventHandler<FontStyle> LabelFontStyleChanged;
+        public event EventHandler<FontStyle>? LabelFontStyleChanged;
         public static readonly DependencyProperty LabelFontStyleProperty =
             DependencyProperty.RegisterAttached("LabelFontStyle", typeof(FontStyle), typeof(T3), new PropertyMetadata(FontStyles.Normal));
         public FontStyle LabelFontStyle
@@ -128,7 +130,7 @@ namespace PropertyGridControl.Base
             }
         }
 
-        public event EventHandler<string> LabelTextChanged;
+        public event EventHandler<string>? LabelTextChanged;
         public static readonly DependencyProperty LabelTextProperty =
             DependencyProperty.RegisterAttached("LabelText", typeof(string), typeof(T3), new PropertyMetadata(default(string)));
         public string LabelText
@@ -141,7 +143,7 @@ namespace PropertyGridControl.Base
             }
         }
 
-        public event EventHandler<GridLength> LabelWidthChanged;
+        public event EventHandler<GridLength>? LabelWidthChanged;
         public static readonly DependencyProperty LabelWidthProperty =
             DependencyProperty.RegisterAttached("LabelWidth", typeof(GridLength), typeof(T3), new PropertyMetadata(new GridLength(0d, GridUnitType.Star)));
         public GridLength LabelWidth
@@ -154,7 +156,7 @@ namespace PropertyGridControl.Base
             }
         }
 
-        public event EventHandler<GridLength> ContentWidthChanged;
+        public event EventHandler<GridLength>? ContentWidthChanged;
         public static readonly DependencyProperty ContentWidthProperty =
             DependencyProperty.RegisterAttached("ContentWidth", typeof(GridLength), typeof(T3), new PropertyMetadata(new GridLength(0d, GridUnitType.Star)));
         public GridLength ContentWidth
@@ -167,7 +169,7 @@ namespace PropertyGridControl.Base
             }
         }
 
-        public event EventHandler<Brush> ForegroundChanged;
+        public event EventHandler<Brush>? ForegroundChanged;
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.RegisterAttached("Foreground", typeof(Brush), typeof(T3), new PropertyMetadata(Brushes.Black));
         public Brush Foreground
@@ -182,7 +184,7 @@ namespace PropertyGridControl.Base
 
         // BackgroundProperty already exists on the base control (Grid), so we don't need to register the DependencyProperty, but
         // need to create a new Getter and Setter, to be able to use the BackgroundChanged event.
-        public event EventHandler<Brush> BackgroundChanged;
+        public event EventHandler<Brush>? BackgroundChanged;
         public new Brush Background
         {
             get => base.Background;
@@ -193,7 +195,7 @@ namespace PropertyGridControl.Base
             }
         }
 
-        public event EventHandler<bool> IsSelectedChanged;
+        public event EventHandler<bool>? IsSelectedChanged;
         public static readonly DependencyProperty IsSelectedProperty =
             DependencyProperty.RegisterAttached("IsSelected", typeof(bool), typeof(T3), new PropertyMetadata(false));
         public bool IsSelected
@@ -206,7 +208,7 @@ namespace PropertyGridControl.Base
             }
         }
 
-        public event EventHandler<Thickness> PropertyMarginChanged;
+        public event EventHandler<Thickness>? PropertyMarginChanged;
         public static readonly DependencyProperty PropertyMarginProperty =
             DependencyProperty.RegisterAttached("PropertyMargin", typeof(Thickness), typeof(T3), new PropertyMetadata(new Thickness(0d)));
         public Thickness PropertyMargin
@@ -221,7 +223,7 @@ namespace PropertyGridControl.Base
 
         // The implementation of value is only basic and in most cases needs an override to handle the Control
         // dependant limitations, which is why it's declared virtual.
-        public event EventHandler<T1> ValueChanged;
+        public event EventHandler<T1>? ValueChanged;
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.RegisterAttached("Value", typeof(T1), typeof(T3), new PropertyMetadata(default(T1)));
         public virtual T1 Value
@@ -343,17 +345,21 @@ namespace PropertyGridControl.Base
             SetBinding("Foreground", this, _nameLabel, Label.ForegroundProperty);
         }
 
-        public static void SetBinding(string sourcePropertyName, object sourceControl, FrameworkElement targetControl, DependencyProperty targetProperty)
+        public static void SetBinding(string sourcePropertyName, object? sourceControl, FrameworkElement targetControl, DependencyProperty targetProperty)
         {
-            Binding binding = new Binding(sourcePropertyName);
-            binding.Source = sourceControl;
+            Binding binding = new(sourcePropertyName)
+            {
+                Source = sourceControl
+            };
             targetControl.SetBinding(targetProperty, binding);
         }
 
-        public static void SetBinding(string sourcePropertyName, object sourceControl, FrameworkContentElement targetControl, DependencyProperty targetProperty)
+        public static void SetBinding(string sourcePropertyName, object? sourceControl, FrameworkContentElement targetControl, DependencyProperty targetProperty)
         {
-            Binding binding = new Binding(sourcePropertyName);
-            binding.Source = sourceControl;
+            Binding binding = new(sourcePropertyName)
+            {
+                Source = sourceControl
+            };
             targetControl.SetBinding(targetProperty, binding);
         }
 

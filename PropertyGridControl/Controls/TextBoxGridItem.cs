@@ -1,19 +1,19 @@
-﻿using System;
+﻿using PropertyGridControl.Base;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using PropertyGridControl.Base;
-using System.Collections.Generic;
 
 namespace PropertyGridControl.Controls
 {
     public class TextBoxGridItem : BaseTextTypedGridItem<string, TextBox, TextBoxGridItem>
     {
-        private readonly HashSet<char> _allowedChars = new HashSet<char>();
+        private readonly HashSet<char> _allowedChars = [];
         private bool _isFiltering = true;
 
-        public event EventHandler<string> CharFilterChanged;
+        public event EventHandler<string>? CharFilterChanged;
         public static readonly DependencyProperty CharFilterProperty =
             DependencyProperty.RegisterAttached("CharFilter", typeof(string), typeof(TextBoxGridItem), new PropertyMetadata(string.Empty));
         public string CharFilter

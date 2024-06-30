@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PropertyGridControl.Base;
+using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -6,13 +7,12 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using PropertyGridControl.Base;
 
 namespace PropertyGridControl.Controls
 {
-    public class NumericUpDownGridItem : BaseTextTypedGridItem<double, TextBox, NumericUpDownGridItem>
+    public partial class NumericUpDownGridItem : BaseTextTypedGridItem<double, TextBox, NumericUpDownGridItem>
     {
-        private readonly Key[] _validKeys = new Key[] {
+        private readonly Key[] _validKeys = [
             Key.NumPad0, Key.NumPad1, Key.NumPad2, Key.NumPad3, Key.NumPad4, Key.NumPad5, Key.NumPad6, Key.NumPad7, Key.NumPad8, Key.NumPad9,
             Key.D0, Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8, Key.D9,
             Key.OemPeriod, Key.OemComma, Key.Separator, Key.Decimal,
@@ -20,18 +20,21 @@ namespace PropertyGridControl.Controls
             Key.Delete, Key.Back, Key.Tab, Key.Enter,
             Key.Left, Key.Right, Key.Up, Key.Down, Key.Home, Key.End,
             Key.A, Key.C, Key.V
-        };
+        ];
 
         private readonly char _decimalSeparationChar =
             Convert.ToChar(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
-        
-        public readonly Regex NumericString = new Regex("^-*\\d+[\\.,]*\\d+$");
-        public readonly Regex NumericSymbols = new Regex("[-\\d\\.,]");
 
-        public readonly Button Button_IncreaseValue = new Button();
-        public readonly Button Button_DecreaseValue = new Button();
+        [GeneratedRegex("^-*\\d+[\\.,]*\\d+$")]
+        public static partial Regex NumericString();
 
-        public event EventHandler<double> MinValueChanged;
+        [GeneratedRegex("[-\\d\\.,]")]
+        public static partial Regex NumericSymbols();
+
+        public readonly Button Button_IncreaseValue = new();
+        public readonly Button Button_DecreaseValue = new();
+
+        public event EventHandler<double>? MinValueChanged;
         public static readonly DependencyProperty MinValueProperty =
             DependencyProperty.RegisterAttached("MinValue", typeof(double),
                 typeof(NumericUpDownGridItem), new PropertyMetadata(double.MinValue));
@@ -45,7 +48,7 @@ namespace PropertyGridControl.Controls
             }
         }
 
-        public event EventHandler<double> MaxValueChanged;
+        public event EventHandler<double>? MaxValueChanged;
         public static readonly DependencyProperty MaxValueProperty =
             DependencyProperty.RegisterAttached("MaxValue", typeof(double),
                 typeof(NumericUpDownGridItem), new PropertyMetadata(double.MaxValue));
@@ -59,7 +62,7 @@ namespace PropertyGridControl.Controls
             }
         }
 
-        public event EventHandler<double> IncrementChanged;
+        public event EventHandler<double>? IncrementChanged;
         public static readonly DependencyProperty IncrementProperty =
             DependencyProperty.RegisterAttached("Increment", typeof(double),
                 typeof(NumericUpDownGridItem), new PropertyMetadata(1d));
@@ -75,7 +78,7 @@ namespace PropertyGridControl.Controls
             }
         }
 
-        public event EventHandler<int> PrecisionChanged;
+        public event EventHandler<int>? PrecisionChanged;
         public static readonly DependencyProperty PrecisionProperty =
             DependencyProperty.RegisterAttached("Precision", typeof(int),
                 typeof(NumericUpDownGridItem), new PropertyMetadata(0));
@@ -101,7 +104,7 @@ namespace PropertyGridControl.Controls
             ValueControlGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1d, GridUnitType.Star) });
             ValueControlGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(30d, GridUnitType.Pixel) });
 
-            Grid buttongrid = new Grid();
+            Grid buttongrid = new();
             ValueControlGrid.Children.Add(buttongrid);
             Grid.SetColumn(buttongrid, 1);
             Grid.SetColumnSpan(buttongrid, 1);
@@ -124,7 +127,7 @@ namespace PropertyGridControl.Controls
             ValueChanged += OnValueChanged;
         }
 
-        protected virtual void OnValueChanged(object sender, double newValue)
+        protected virtual void OnValueChanged(object? sender, double newValue)
         {
             if (double.IsNaN(newValue))
                 throw new ArgumentOutOfRangeException(nameof(newValue));
@@ -248,10 +251,10 @@ namespace PropertyGridControl.Controls
             e.Handled = true;
         }
 
-        private bool IsValidInputCharacter(string input)
+        private static bool IsValidInputCharacter(string input)
         {
             // Only allow valid numeric and formatting characters
-            return NumericSymbols.IsMatch(input);
+            return NumericSymbols().IsMatch(input);
         }
 
         //protected virtual void OnTextBoxContent_TextChanged(object sender, TextChangedEventArgs e)

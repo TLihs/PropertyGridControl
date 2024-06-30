@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using PropertyGridControl.Base;
+﻿using PropertyGridControl.Base;
+using System.Windows;
 
 namespace PropertyGridControl.Controls
 {
