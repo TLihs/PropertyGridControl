@@ -14,7 +14,7 @@ namespace PropertyGridControl.Base
 {
     public abstract class BasePathSelectionGridItem : BaseTextTypedGridItem<string, TextBox, BasePathSelectionGridItem>
     {
-        public readonly Button Button_PathSelection = new Button() { Content = "..." };
+        public readonly Button Button_PathSelection = new() { Content = "..." };
 
         protected CommonOpenFileDialog PathSelectionDialog;
 

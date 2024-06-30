@@ -21,19 +21,19 @@ namespace PropertyGridControl.Base
         where T2 : Control, new()
         where T3 : BaseTypedGridItem<T1, T2, T3>
     {
-        public static List<T3> Items = [];
+        public static readonly List<T3> Items = [];
 
         private string _name = string.Empty;
-        private Label _nameLabel = new();
-        private ColumnDefinition _columnDefinitionLeftMargin = new() { Width = new GridLength(0d, GridUnitType.Pixel) };
-        private ColumnDefinition _columnDefinitionRightMargin = new() { Width = new GridLength(0d, GridUnitType.Pixel) };
-        private RowDefinition _rowDefinitionTopMargin = new() { Height = new GridLength(0d, GridUnitType.Pixel) };
-        private RowDefinition _rowDefinitionBottomMargin = new() { Height = new GridLength(0d, GridUnitType.Pixel) };
-        private ColumnDefinition _columnDefinitionLabel = new() { Width = new GridLength(50d, GridUnitType.Pixel) };
-        private ColumnDefinition _columnDefinitionValue = new() { Width = new GridLength(50d, GridUnitType.Pixel) };
-        private RowDefinition _rowDefinitionContent = new() { Height = new GridLength(1d, GridUnitType.Star) };
+        private readonly Label _nameLabel = new();
+        private readonly ColumnDefinition _columnDefinitionLeftMargin = new() { Width = new GridLength(0d, GridUnitType.Pixel) };
+        private readonly ColumnDefinition _columnDefinitionRightMargin = new() { Width = new GridLength(0d, GridUnitType.Pixel) };
+        private readonly RowDefinition _rowDefinitionTopMargin = new() { Height = new GridLength(0d, GridUnitType.Pixel) };
+        private readonly RowDefinition _rowDefinitionBottomMargin = new() { Height = new GridLength(0d, GridUnitType.Pixel) };
+        private readonly ColumnDefinition _columnDefinitionLabel = new() { Width = new GridLength(50d, GridUnitType.Pixel) };
+        private readonly ColumnDefinition _columnDefinitionValue = new() { Width = new GridLength(50d, GridUnitType.Pixel) };
+        private readonly RowDefinition _rowDefinitionContent = new() { Height = new GridLength(1d, GridUnitType.Star) };
         private GridControl? _gridParent = null;
-        private T1 _originalValue = default;
+        private T1 _originalValue = default!;
         private bool _originalValueSet = false;
         private bool _valueSet = false;
 
@@ -265,8 +265,8 @@ namespace PropertyGridControl.Base
 
         // We don't want the programmer implementing the PropertyGridControl to change the ValueControl or it's
         // parent Grid during runtime, that's why it is set to readonly and protected.
-        protected readonly T2 ValueControl = new T2();
-        protected readonly Grid ValueControlGrid = new Grid();
+        protected readonly T2 ValueControl = new();
+        protected readonly Grid ValueControlGrid = new();
 
         public BaseTypedGridItem(string name)
         {
