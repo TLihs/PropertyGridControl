@@ -2,14 +2,16 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="WindowsAPICodePack" Version="8.0.4" />
+    <PackageReference Include="WindowsAPICodePack" Version="8.0.4">
+      <GeneratePathProperty>True</GeneratePathProperty>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

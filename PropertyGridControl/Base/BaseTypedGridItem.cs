@@ -49,7 +49,7 @@ namespace PropertyGridControl.Base
             }
         }
 
-        public event EventHandler<GridControl>? GridParentChanged;
+        public event EventHandler<GridControl?>? GridParentChanged;
         public GridControl? GridParent
         {
             get => _gridParent;
@@ -59,8 +59,7 @@ namespace PropertyGridControl.Base
                 {
                     _gridParent = value;
                     SetGridParentBindings();
-                    if (value != null)
-                        GridParentChanged?.Invoke(this, value);
+                    GridParentChanged?.Invoke(this, value);
                 }
             }
         }

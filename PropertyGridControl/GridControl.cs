@@ -1,6 +1,7 @@
 ﻿using PropertyGridControl.Base;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -340,7 +341,7 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty LabelWidthProperty =
-            DependencyProperty.RegisterAttached("LabelWidth", typeof(GridLength), typeof(GridControl), new PropertyMetadata(new GridLength(0d, GridUnitType.Star)));
+            DependencyProperty.RegisterAttached("LabelWidth", typeof(GridLength), typeof(GridControl), new PropertyMetadata(new GridLength(1d, GridUnitType.Star)));
         public GridLength LabelWidth
         {
             get => (GridLength)GetValue(LabelWidthProperty);
@@ -348,7 +349,7 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ContentWidthProperty =
-            DependencyProperty.RegisterAttached("ContentWidth", typeof(GridLength), typeof(GridControl), new PropertyMetadata(new GridLength(0d, GridUnitType.Star)));
+            DependencyProperty.RegisterAttached("ContentWidth", typeof(GridLength), typeof(GridControl), new PropertyMetadata(new GridLength(1d, GridUnitType.Star)));
         public GridLength ContentWidth
         {
             get => (GridLength)GetValue(ContentWidthProperty);
