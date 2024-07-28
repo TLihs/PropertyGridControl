@@ -12,7 +12,8 @@ namespace PropertyGridControl.Controls
     {
         public CheckBoxGridItem() : base($"CheckBoxGridItem{(Items.Count > 0 ? (Items.Count + 1).ToString() : string.Empty)}")
         {
-
+            ValueControl.Height = ValueControl.Height - 4;
+            ValueControl.Margin = new(0, 4, 0, 0);
         }
     }
 }

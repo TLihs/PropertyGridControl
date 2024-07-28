@@ -19,8 +19,8 @@ namespace PropertyGridControl.Controls
 
         public event EventHandler<string>? ExtensionFilterChanged;
         public static readonly DependencyProperty ExtensionFilterProperty =
-            DependencyProperty.RegisterAttached("ExtensionFilter", typeof(string),
-                typeof(GridControl), new PropertyMetadata(string.Empty));
+            DependencyProperty.RegisterAttached("ExtensionFilter", typeof(string), typeof(GridControl),
+                new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.AffectsRender));
         public string ExtensionFilter
         {
             get => (string)GetValue(ExtensionFilterProperty);
@@ -36,8 +36,8 @@ namespace PropertyGridControl.Controls
         }
         public event EventHandler<bool>? EnsureFileExistsChanged;
         public static readonly DependencyProperty EnsureFileExistsProperty =
-            DependencyProperty.RegisterAttached("EnsureFileExists", typeof(bool),
-                typeof(GridControl), new PropertyMetadata(true));
+            DependencyProperty.RegisterAttached("EnsureFileExists", typeof(bool), typeof(GridControl),
+                new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
         public bool EnsureFileExists
         {
             get => (bool)GetValue(EnsureFileExistsProperty);

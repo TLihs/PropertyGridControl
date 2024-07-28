@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,7 +11,7 @@ namespace PropertyGridControl.Base
     // for every property itself, so the user can directly access each properties event without having to filter the specific
     // property from within the OnPropertyChanged function (or any custom appended function to the PropertyChanged event).
 
-    public abstract class BaseTypedGridItem<T1, T2, T3> : Grid
+    public abstract class BaseTypedGridItem<T1, T2, T3> : Border
         where T1 : notnull
         where T2 : Control, new()
         where T3 : BaseTypedGridItem<T1, T2, T3>
@@ -25,19 +20,18 @@ namespace PropertyGridControl.Base
 
         private string _name = string.Empty;
         private readonly Label _nameLabel = new();
+        private readonly Grid _grid = new();
         private readonly ColumnDefinition _columnDefinitionLeftMargin = new() { Width = new GridLength(0d, GridUnitType.Pixel) };
         private readonly ColumnDefinition _columnDefinitionRightMargin = new() { Width = new GridLength(0d, GridUnitType.Pixel) };
         private readonly RowDefinition _rowDefinitionTopMargin = new() { Height = new GridLength(0d, GridUnitType.Pixel) };
         private readonly RowDefinition _rowDefinitionBottomMargin = new() { Height = new GridLength(0d, GridUnitType.Pixel) };
-        private readonly ColumnDefinition _columnDefinitionLabel = new() { Width = new GridLength(50d, GridUnitType.Pixel) };
-        private readonly ColumnDefinition _columnDefinitionValue = new() { Width = new GridLength(50d, GridUnitType.Pixel) };
+        private readonly ColumnDefinition _columnDefinitionLabel = new() { Width = new GridLength(1d, GridUnitType.Star) };
+        private readonly ColumnDefinition _columnDefinitionValue = new() { Width = new GridLength(1d, GridUnitType.Star) };
         private readonly RowDefinition _rowDefinitionContent = new() { Height = new GridLength(1d, GridUnitType.Star) };
         private GridControl? _gridParent = null;
         private T1 _originalValue = default!;
         private bool _originalValueSet = false;
         private bool _valueSet = false;
-
-        protected T2? _valueControl;
 
         public string PropertyName
         {
@@ -59,14 +53,49 @@ namespace PropertyGridControl.Base
                 {
                     _gridParent = value;
                     SetGridParentBindings();
+
+                    this.Height = 30d;
+                    this.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    ContentWidth = new(1d, GridUnitType.Star);
+                    LabelWidth = new(1d, GridUnitType.Star);
+
                     GridParentChanged?.Invoke(this, value);
                 }
             }
         }
 
+        public event EventHandler<Thickness>? PropertyBorderThicknessChanged;
+        public static readonly DependencyProperty PropertyBorderThicknessProperty =
+            DependencyProperty.RegisterAttached("PropertyBorderThickness", typeof(Thickness), typeof(T3),
+                new FrameworkPropertyMetadata(new Thickness(), FrameworkPropertyMetadataOptions.AffectsRender));
+        public Thickness PropertyBorderThickness
+        {
+            get => (Thickness)GetValue(PropertyBorderThicknessProperty);
+            set
+            {
+                SetValue(PropertyBorderThicknessProperty, value);
+                PropertyBorderThicknessChanged?.Invoke(this, value);
+            }
+        }
+
+        public event EventHandler<Brush>? PropertyBorderBrushChanged;
+        public static readonly DependencyProperty PropertyBorderBrushProperty =
+            DependencyProperty.RegisterAttached("PropertyBorderBrush", typeof(Brush), typeof(T3),
+                new FrameworkPropertyMetadata(new SolidColorBrush(), FrameworkPropertyMetadataOptions.AffectsRender));
+        public Brush PropertyBorderBrush
+        {
+            get => (Brush)GetValue(PropertyBorderBrushProperty);
+            set
+            {
+                SetValue(PropertyBorderBrushProperty, value);
+                PropertyBorderBrushChanged?.Invoke(this, value);
+            }
+        }
+
         public event EventHandler<double>? LabelFontSizeChanged;
         public static readonly DependencyProperty LabelFontSizeProperty =
-            DependencyProperty.RegisterAttached("LabelFontSize", typeof(double), typeof(T3), new PropertyMetadata(12d));
+            DependencyProperty.RegisterAttached("LabelFontSize", typeof(double), typeof(T3),
+                new FrameworkPropertyMetadata(12d, FrameworkPropertyMetadataOptions.AffectsRender));
         public double LabelFontSize
         {
             get => (double)GetValue(LabelFontSizeProperty);
@@ -79,7 +108,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<FontWeight>? LabelFontWeightChanged;
         public static readonly DependencyProperty LabelFontWeightProperty =
-            DependencyProperty.RegisterAttached("LabelFontWeight", typeof(FontWeight), typeof(T3), new PropertyMetadata(FontWeights.Normal));
+            DependencyProperty.RegisterAttached("LabelFontWeight", typeof(FontWeight), typeof(T3),
+                new FrameworkPropertyMetadata(FontWeights.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontWeight LabelFontWeight
         {
             get => (FontWeight)GetValue(LabelFontWeightProperty);
@@ -92,7 +122,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<FontFamily>? LabelFontFamilyChanged;
         public static readonly DependencyProperty LabelFontFamilyProperty =
-            DependencyProperty.RegisterAttached("LabelFontFamily", typeof(FontFamily), typeof(T3), new PropertyMetadata(new FontFamily("Segoe UI")));
+            DependencyProperty.RegisterAttached("LabelFontFamily", typeof(FontFamily), typeof(T3),
+                new FrameworkPropertyMetadata(new FontFamily("Segoe UI"), FrameworkPropertyMetadataOptions.AffectsRender));
         public FontFamily LabelFontFamily
         {
             get => (FontFamily)GetValue(LabelFontFamilyProperty);
@@ -105,7 +136,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<FontStretch>? LabelFontStretchChanged;
         public static readonly DependencyProperty LabelFontStretchProperty =
-            DependencyProperty.RegisterAttached("LabelFontStretch", typeof(FontStretch), typeof(T3), new PropertyMetadata(FontStretches.Normal));
+            DependencyProperty.RegisterAttached("LabelFontStretch", typeof(FontStretch), typeof(T3),
+                new FrameworkPropertyMetadata(FontStretches.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStretch LabelFontStretch
         {
             get => (FontStretch)GetValue(LabelFontStretchProperty);
@@ -118,7 +150,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<FontStyle>? LabelFontStyleChanged;
         public static readonly DependencyProperty LabelFontStyleProperty =
-            DependencyProperty.RegisterAttached("LabelFontStyle", typeof(FontStyle), typeof(T3), new PropertyMetadata(FontStyles.Normal));
+            DependencyProperty.RegisterAttached("LabelFontStyle", typeof(FontStyle), typeof(T3),
+                new FrameworkPropertyMetadata(FontStyles.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStyle LabelFontStyle
         {
             get => (FontStyle)GetValue(LabelFontStyleProperty);
@@ -131,7 +164,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<string>? LabelTextChanged;
         public static readonly DependencyProperty LabelTextProperty =
-            DependencyProperty.RegisterAttached("LabelText", typeof(string), typeof(T3), new PropertyMetadata(default(string)));
+            DependencyProperty.RegisterAttached("LabelText", typeof(string), typeof(T3),
+                new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.AffectsRender));
         public string LabelText
         {
             get => (string)GetValue(LabelTextProperty);
@@ -144,7 +178,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<GridLength>? LabelWidthChanged;
         public static readonly DependencyProperty LabelWidthProperty =
-            DependencyProperty.RegisterAttached("LabelWidth", typeof(GridLength), typeof(T3), new PropertyMetadata(new GridLength(0d, GridUnitType.Star)));
+            DependencyProperty.RegisterAttached("LabelWidth", typeof(GridLength), typeof(T3),
+                new FrameworkPropertyMetadata(new GridLength(1d, GridUnitType.Star), FrameworkPropertyMetadataOptions.AffectsRender));
         public GridLength LabelWidth
         {
             get => (GridLength)GetValue(LabelWidthProperty);
@@ -157,7 +192,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<GridLength>? ContentWidthChanged;
         public static readonly DependencyProperty ContentWidthProperty =
-            DependencyProperty.RegisterAttached("ContentWidth", typeof(GridLength), typeof(T3), new PropertyMetadata(new GridLength(0d, GridUnitType.Star)));
+            DependencyProperty.RegisterAttached("ContentWidth", typeof(GridLength), typeof(T3),
+                new FrameworkPropertyMetadata(new GridLength(1d, GridUnitType.Star), FrameworkPropertyMetadataOptions.AffectsRender));
         public GridLength ContentWidth
         {
             get => (GridLength)GetValue(ContentWidthProperty);
@@ -168,9 +204,24 @@ namespace PropertyGridControl.Base
             }
         }
 
+        public event EventHandler<double>? ContentHeightChanged;
+        public static readonly DependencyProperty ContentHeightProperty =
+            DependencyProperty.RegisterAttached("ContentHeight", typeof(double), typeof(T3),
+                new FrameworkPropertyMetadata(25d, FrameworkPropertyMetadataOptions.AffectsRender));
+        public double ContentHeight
+        {
+            get => (double)GetValue(ContentHeightProperty);
+            set
+            {
+                SetValue(ContentHeightProperty, value);
+                ContentHeightChanged?.Invoke(this, value);
+            }
+        }
+
         public event EventHandler<Brush>? ForegroundChanged;
         public static readonly DependencyProperty ForegroundProperty =
-            DependencyProperty.RegisterAttached("Foreground", typeof(Brush), typeof(T3), new PropertyMetadata(Brushes.Black));
+            DependencyProperty.RegisterAttached("Foreground", typeof(Brush), typeof(T3),
+                new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender));
         public Brush Foreground
         {
             get => (Brush)GetValue(ForegroundProperty);
@@ -196,7 +247,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<bool>? IsSelectedChanged;
         public static readonly DependencyProperty IsSelectedProperty =
-            DependencyProperty.RegisterAttached("IsSelected", typeof(bool), typeof(T3), new PropertyMetadata(false));
+            DependencyProperty.RegisterAttached("IsSelected", typeof(bool), typeof(T3),
+                new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
         public bool IsSelected
         {
             get => (bool)GetValue(IsSelectedProperty);
@@ -209,7 +261,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<Thickness>? PropertyMarginChanged;
         public static readonly DependencyProperty PropertyMarginProperty =
-            DependencyProperty.RegisterAttached("PropertyMargin", typeof(Thickness), typeof(T3), new PropertyMetadata(new Thickness(0d)));
+            DependencyProperty.RegisterAttached("PropertyMargin", typeof(Thickness), typeof(T3),
+                new FrameworkPropertyMetadata(new Thickness(0d), FrameworkPropertyMetadataOptions.AffectsRender));
         public Thickness PropertyMargin
         {
             get => (Thickness)GetValue(PropertyMarginProperty);
@@ -224,7 +277,8 @@ namespace PropertyGridControl.Base
         // dependant limitations, which is why it's declared virtual.
         public event EventHandler<T1>? ValueChanged;
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.RegisterAttached("Value", typeof(T1), typeof(T3), new PropertyMetadata(default(T1)));
+            DependencyProperty.RegisterAttached("Value", typeof(T1), typeof(T3),
+                new FrameworkPropertyMetadata(default(T1), FrameworkPropertyMetadataOptions.AffectsRender));
         public virtual T1 Value
         {
             get => (T1)GetValue(ValueProperty);
@@ -248,7 +302,8 @@ namespace PropertyGridControl.Base
         // We don't define an DefaultPropertyChanged event, since it doesn't seem reasonable to change a default
         // value during runtime, so there shouldn't be any preimplemented event triggered for changes to this.
         public static readonly DependencyProperty DefaultValueProperty =
-            DependencyProperty.RegisterAttached("DefaultValue", typeof(T1), typeof(T3), new PropertyMetadata(default(T1)));
+            DependencyProperty.RegisterAttached("DefaultValue", typeof(T1), typeof(T3),
+                new FrameworkPropertyMetadata(default(T1), FrameworkPropertyMetadataOptions.AffectsRender));
         public T1 DefaultValue
         {
             get => (T1)GetValue(DefaultValueProperty);
@@ -271,15 +326,15 @@ namespace PropertyGridControl.Base
         {
             Debug.Print($"BaseGridItem({name})");
 
-            ColumnDefinitions.Add(_columnDefinitionLeftMargin);
-            ColumnDefinitions.Add(_columnDefinitionLabel);
-            ColumnDefinitions.Add(_columnDefinitionValue);
-            ColumnDefinitions.Add(_columnDefinitionRightMargin);
-            RowDefinitions.Add(_rowDefinitionTopMargin);
-            RowDefinitions.Add(_rowDefinitionContent);
-            RowDefinitions.Add(_rowDefinitionBottomMargin);
+            _grid.ColumnDefinitions.Add(_columnDefinitionLeftMargin);
+            _grid.ColumnDefinitions.Add(_columnDefinitionLabel);
+            _grid.ColumnDefinitions.Add(_columnDefinitionValue);
+            _grid.ColumnDefinitions.Add(_columnDefinitionRightMargin);
+            _grid.RowDefinitions.Add(_rowDefinitionTopMargin);
+            _grid.RowDefinitions.Add(_rowDefinitionContent);
+            _grid.RowDefinitions.Add(_rowDefinitionBottomMargin);
 
-            this.Children.Add(_nameLabel);
+            _grid.Children.Add(_nameLabel);
             Grid.SetColumn(_nameLabel, 1);
             Grid.SetColumnSpan(_nameLabel, 1);
             Grid.SetRow(_nameLabel, 1);
@@ -290,7 +345,7 @@ namespace PropertyGridControl.Base
             _nameLabel.HorizontalContentAlignment = HorizontalAlignment.Left;
             _nameLabel.VerticalContentAlignment = VerticalAlignment.Center;
 
-            this.Children.Add(ValueControlGrid);
+            _grid.Children.Add(ValueControlGrid);
             Grid.SetColumn(ValueControlGrid, 2);
             Grid.SetColumnSpan(ValueControlGrid, 1);
             Grid.SetRow(ValueControlGrid, 1);
@@ -303,16 +358,28 @@ namespace PropertyGridControl.Base
             ValueControl.VerticalAlignment = VerticalAlignment.Stretch;
 
             PropertyName = name;
-            this.Height = 30d;
+
+            this.Child = _grid;
+            _grid.HorizontalAlignment = HorizontalAlignment.Stretch;
+            _grid.VerticalAlignment = VerticalAlignment.Stretch;
 
             Items.Add((T3)this);
 
             SetBaseGridItemBindings();
+            SizeChanged += OnSizeChanged;
+        }
+
+        private void OnSizeChanged(object? sender, SizeChangedEventArgs e)
+        {
+            ContentHeight = e.NewSize.Height - 4d;
         }
 
         protected virtual void SetGridParentBindings()
         {
             Debug.Print("SetGridParentBindings()");
+
+            SetBinding("PropertyBorderThickness", GridParent, this, PropertyBorderThicknessProperty);
+            SetBinding("PropertyBorderBrush", GridParent, this, PropertyBorderBrushProperty);
 
             SetBinding("LabelFontSize", GridParent, this, LabelFontSizeProperty);
             SetBinding("LabelFontWeight", GridParent, this, LabelFontWeightProperty);
@@ -321,6 +388,7 @@ namespace PropertyGridControl.Base
             SetBinding("LabelFontStyle", GridParent, this, LabelFontStyleProperty);
             SetBinding("LabelWidth", GridParent, this, LabelWidthProperty);
             SetBinding("ContentWidth", GridParent, this, ContentWidthProperty);
+            SetBinding("ContentHeight", GridParent, this, ContentHeightProperty);
 
             SetBinding("PropertyMargin", GridParent, this, PropertyMarginProperty);
             SetBinding("PropertyHeight", GridParent, this, HeightProperty);
@@ -332,6 +400,9 @@ namespace PropertyGridControl.Base
         {
             Debug.Print("SetBaseGridItemBindings()");
 
+            SetBinding("PropertyBorderThickness", this, this, Border.BorderThicknessProperty);
+            SetBinding("PropertyBorderBrush", this, this, Border.BorderBrushProperty);
+
             SetBinding("LabelFontSize", this, _nameLabel, Label.FontSizeProperty);
             SetBinding("LabelFontWeight", this, _nameLabel, Label.FontWeightProperty);
             SetBinding("LabelFontFamily", this, _nameLabel, Label.FontFamilyProperty);
@@ -340,6 +411,7 @@ namespace PropertyGridControl.Base
             SetBinding("LabelText", this, _nameLabel, Label.ContentProperty);
             SetBinding("LabelWidth", this, _columnDefinitionLabel, ColumnDefinition.WidthProperty);
             SetBinding("ContentWidth", this, _columnDefinitionValue, ColumnDefinition.WidthProperty);
+            SetBinding("ContentHeight", this, ValueControl, Control.HeightProperty);
 
             SetBinding("Foreground", this, _nameLabel, Label.ForegroundProperty);
         }
@@ -366,8 +438,11 @@ namespace PropertyGridControl.Base
         {
             base.OnVisualParentChanged(oldParent);
 
-            if (Parent.GetType() == typeof(GridControl))
-                GridParent = (GridControl)Parent;
+            if (Parent is GridControl gridParent)
+            {
+                GridParent = gridParent;
+                InvalidateVisual();
+            }
         }
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
@@ -375,7 +450,10 @@ namespace PropertyGridControl.Base
             base.OnRenderSizeChanged(sizeInfo);
 
             if (!double.IsNaN(this.Width) && !double.IsNaN(_columnDefinitionLabel.Width.Value))
-                _columnDefinitionValue.Width = new GridLength(this.Width - _columnDefinitionLabel.Width.Value, GridUnitType.Pixel);
+            {
+                if (!ContentWidth.IsStar && !LabelWidth.IsStar)
+                    ContentWidth = new GridLength(this.Width - LabelWidth.Value, GridUnitType.Pixel);
+            }
         }
 
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)

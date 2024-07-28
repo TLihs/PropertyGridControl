@@ -19,7 +19,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<Brush>? ContentBackgroundChanged;
         public static readonly DependencyProperty ContentBackgroundProperty =
-            DependencyProperty.RegisterAttached("ContentBackground", typeof(Brush), typeof(T3), new PropertyMetadata(Brushes.White));
+            DependencyProperty.RegisterAttached("ContentBackground", typeof(Brush), typeof(T3),
+                new FrameworkPropertyMetadata(Brushes.White, FrameworkPropertyMetadataOptions.AffectsRender));
         public Brush ContentBackground
         {
             get => (Brush)GetValue(ContentBackgroundProperty);
@@ -32,7 +33,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<Brush>? ContentForegroundChanged;
         public static readonly DependencyProperty ContentForegroundProperty =
-            DependencyProperty.RegisterAttached("ContentForeground", typeof(Brush), typeof(T3), new PropertyMetadata(Brushes.Black));
+            DependencyProperty.RegisterAttached("ContentForeground", typeof(Brush), typeof(T3),
+                new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender));
         public Brush ContentForeground
         {
             get => (Brush)GetValue(ContentForegroundProperty);
@@ -45,7 +47,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<Brush>? ContentBorderBrushChanged;
         public static readonly DependencyProperty ContentBorderBrushProperty =
-            DependencyProperty.RegisterAttached("ContentBorderBrush", typeof(Brush), typeof(T3), new PropertyMetadata(Brushes.Gray));
+            DependencyProperty.RegisterAttached("ContentBorderBrush", typeof(Brush), typeof(T3),
+                new FrameworkPropertyMetadata(Brushes.Gray, FrameworkPropertyMetadataOptions.AffectsRender));
         public Brush ContentBorderBrush
         {
             get => (Brush)GetValue(ContentBorderBrushProperty);
@@ -58,7 +61,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<Thickness>? ContentBorderThicknessChanged;
         public static readonly DependencyProperty ContentBorderThicknessProperty =
-            DependencyProperty.RegisterAttached("ContentBorderThickness", typeof(Thickness), typeof(T3), new PropertyMetadata(new Thickness(0d)));
+            DependencyProperty.RegisterAttached("ContentBorderThickness", typeof(Thickness), typeof(T3),
+                new FrameworkPropertyMetadata(new Thickness(0d), FrameworkPropertyMetadataOptions.AffectsRender));
         public Thickness ContentBorderThickness
         {
             get => (Thickness)GetValue(ContentBorderThicknessProperty);
@@ -71,7 +75,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<double>? ContentFontSizeChanged;
         public static readonly DependencyProperty ContentFontSizeProperty =
-            DependencyProperty.RegisterAttached("ContentFontSize", typeof(double), typeof(T3), new PropertyMetadata(12d));
+            DependencyProperty.RegisterAttached("ContentFontSize", typeof(double), typeof(T3),
+                new FrameworkPropertyMetadata(12d, FrameworkPropertyMetadataOptions.AffectsRender));
         public double ContentFontSize
         {
             get => (double)GetValue(ContentFontSizeProperty);
@@ -84,7 +89,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<FontWeight>? ContentFontWeightChanged;
         public static readonly DependencyProperty ContentFontWeightProperty =
-            DependencyProperty.RegisterAttached("ContentFontWeight", typeof(FontWeight), typeof(T3), new PropertyMetadata(FontWeights.Normal));
+            DependencyProperty.RegisterAttached("ContentFontWeight", typeof(FontWeight), typeof(T3),
+                new FrameworkPropertyMetadata(FontWeights.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontWeight ContentFontWeight
         {
             get => (FontWeight)GetValue(ContentFontWeightProperty);
@@ -97,7 +103,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<FontFamily>? ContentFontFamilyChanged;
         public static readonly DependencyProperty ContentFontFamilyProperty =
-            DependencyProperty.RegisterAttached("ContentFontFamily", typeof(FontFamily), typeof(T3), new PropertyMetadata(new FontFamily("Segoe UI")));
+            DependencyProperty.RegisterAttached("ContentFontFamily", typeof(FontFamily), typeof(T3),
+                new FrameworkPropertyMetadata(new FontFamily("Segoe UI"), FrameworkPropertyMetadataOptions.AffectsRender));
         public FontFamily ContentFontFamily
         {
             get => (FontFamily)GetValue(ContentFontFamilyProperty);
@@ -110,7 +117,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<FontStretch>? ContentFontStretchChanged;
         public static readonly DependencyProperty ContentFontStretchProperty =
-            DependencyProperty.RegisterAttached("ContentFontStretch", typeof(FontStretch), typeof(T3), new PropertyMetadata(FontStretches.Normal));
+            DependencyProperty.RegisterAttached("ContentFontStretch", typeof(FontStretch), typeof(T3),
+                new FrameworkPropertyMetadata(FontStretches.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStretch ContentFontStretch
         {
             get => (FontStretch)GetValue(ContentFontStretchProperty);
@@ -123,7 +131,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<FontStyle>? ContentFontStyleChanged;
         public static readonly DependencyProperty ContentFontStyleProperty =
-            DependencyProperty.RegisterAttached("ContentFontStyle", typeof(FontStyle), typeof(T3), new PropertyMetadata(FontStyles.Normal));
+            DependencyProperty.RegisterAttached("ContentFontStyle", typeof(FontStyle), typeof(T3),
+                new FrameworkPropertyMetadata(FontStyles.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStyle ContentFontStyle
         {
             get => (FontStyle)GetValue(ContentFontStyleProperty);
@@ -136,7 +145,8 @@ namespace PropertyGridControl.Base
 
         public event EventHandler<string>? ContentTextChanged;
         public static readonly DependencyProperty ContentTextProperty =
-            DependencyProperty.RegisterAttached("ContentText", typeof(string), typeof(T3), new PropertyMetadata(default(string)));
+            DependencyProperty.RegisterAttached("ContentText", typeof(string), typeof(T3),
+                new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.AffectsRender));
         public string ContentText
         {
             get => (string)GetValue(ContentTextProperty);
@@ -171,6 +181,11 @@ namespace PropertyGridControl.Base
         }
 
         public BaseTextTypedGridItem(string name) : base(name)
+        {
+            base.GridParentChanged += OnGridParentChanged;
+        }
+
+        private void OnGridParentChanged(object? sender, GridControl? e)
         {
             SetGridParentBindings();
         }
@@ -215,6 +230,7 @@ namespace PropertyGridControl.Base
             SetBinding("ContentFontStretch", GridParent, this, ContentFontStretchProperty);
             SetBinding("ContentFontStyle", GridParent, this, ContentFontStyleProperty);
             SetBinding("ContentWidth", GridParent, this, ContentWidthProperty);
+            SetBinding("ContentHeight", GridParent, this, ContentHeightProperty);
             SetBinding("ContentBackground", GridParent, this, ContentBackgroundProperty);
             SetBinding("ContentForeground", GridParent, this, ContentForegroundProperty);
             SetBinding("ContentBorderBrush", GridParent, this, ContentBorderBrushProperty);

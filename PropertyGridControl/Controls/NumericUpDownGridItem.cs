@@ -36,8 +36,8 @@ namespace PropertyGridControl.Controls
 
         public event EventHandler<double>? MinValueChanged;
         public static readonly DependencyProperty MinValueProperty =
-            DependencyProperty.RegisterAttached("MinValue", typeof(double),
-                typeof(NumericUpDownGridItem), new PropertyMetadata(double.MinValue));
+            DependencyProperty.RegisterAttached("MinValue", typeof(double), typeof(NumericUpDownGridItem),
+                new FrameworkPropertyMetadata(double.MinValue, FrameworkPropertyMetadataOptions.AffectsRender));
         public double MinValue
         {
             get => (double)GetValue(MinValueProperty);
@@ -50,8 +50,8 @@ namespace PropertyGridControl.Controls
 
         public event EventHandler<double>? MaxValueChanged;
         public static readonly DependencyProperty MaxValueProperty =
-            DependencyProperty.RegisterAttached("MaxValue", typeof(double),
-                typeof(NumericUpDownGridItem), new PropertyMetadata(double.MaxValue));
+            DependencyProperty.RegisterAttached("MaxValue", typeof(double), typeof(NumericUpDownGridItem),
+                new FrameworkPropertyMetadata(double.MaxValue, FrameworkPropertyMetadataOptions.AffectsRender));
         public double MaxValue
         {
             get => (double)GetValue(MaxValueProperty);
@@ -64,8 +64,8 @@ namespace PropertyGridControl.Controls
 
         public event EventHandler<double>? IncrementChanged;
         public static readonly DependencyProperty IncrementProperty =
-            DependencyProperty.RegisterAttached("Increment", typeof(double),
-                typeof(NumericUpDownGridItem), new PropertyMetadata(1d));
+            DependencyProperty.RegisterAttached("Increment", typeof(double), typeof(NumericUpDownGridItem),
+                new FrameworkPropertyMetadata(1d, FrameworkPropertyMetadataOptions.AffectsRender));
         public double Increment
         {
             get => (double)GetValue(IncrementProperty);
@@ -80,8 +80,8 @@ namespace PropertyGridControl.Controls
 
         public event EventHandler<int>? PrecisionChanged;
         public static readonly DependencyProperty PrecisionProperty =
-            DependencyProperty.RegisterAttached("Precision", typeof(int),
-                typeof(NumericUpDownGridItem), new PropertyMetadata(0));
+            DependencyProperty.RegisterAttached("Precision", typeof(int), typeof(NumericUpDownGridItem),
+                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsRender));
         public int Precision
         {
             get => (int)GetValue(PrecisionProperty);

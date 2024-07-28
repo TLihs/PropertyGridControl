@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,8 @@ namespace PropertyGridControl
     public class GridControl : StackPanel
     {
         public static readonly DependencyProperty BorderThicknessProperty =
-            DependencyProperty.RegisterAttached("BorderThickness", typeof(Thickness), typeof(GridControl), new PropertyMetadata(new Thickness(1)));
+            DependencyProperty.RegisterAttached("BorderThickness", typeof(Thickness), typeof(GridControl),
+                new FrameworkPropertyMetadata(new Thickness(1), FrameworkPropertyMetadataOptions.AffectsRender));
         public Thickness BorderThickness
         {
             get => (Thickness)GetValue(BorderThicknessProperty);
@@ -29,7 +31,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty BorderBrushProperty =
-            DependencyProperty.RegisterAttached("BorderBrush", typeof(Brush), typeof(GridControl), new PropertyMetadata(Brushes.Black));
+            DependencyProperty.RegisterAttached("BorderBrush", typeof(Brush), typeof(GridControl),
+                new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender));
         public Brush BorderBrush
         {
             get => (Brush)GetValue(BorderBrushProperty);
@@ -37,7 +40,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty PropertyBorderThicknessProperty =
-            DependencyProperty.RegisterAttached("PropertyBorderThickness", typeof(Thickness), typeof(GridControl), new PropertyMetadata(new Thickness(1)));
+            DependencyProperty.RegisterAttached("PropertyBorderThickness", typeof(Thickness), typeof(GridControl),
+                new FrameworkPropertyMetadata(new Thickness(1), FrameworkPropertyMetadataOptions.AffectsRender));
         public Thickness PropertyBorderThickness
         {
             get => (Thickness)GetValue(PropertyBorderThicknessProperty);
@@ -45,7 +49,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty PropertyBorderBrushProperty =
-            DependencyProperty.RegisterAttached("PropertyBorderBrush", typeof(Brush), typeof(GridControl), new PropertyMetadata(Brushes.Black));
+            DependencyProperty.RegisterAttached("PropertyBorderBrush", typeof(Brush), typeof(GridControl),
+                new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender));
         public Brush PropertyBorderBrush
         {
             get => (Brush)GetValue(PropertyBorderBrushProperty);
@@ -53,7 +58,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty PropertyBackgroundProperty =
-            DependencyProperty.RegisterAttached("PropertyBackground", typeof(Brush), typeof(GridControl), new PropertyMetadata(Brushes.Black));
+            DependencyProperty.RegisterAttached("PropertyBackground", typeof(Brush), typeof(GridControl),
+                new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender));
         public Brush PropertyBackground
         {
             get => (Brush)GetValue(PropertyBackgroundProperty);
@@ -61,7 +67,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty PropertyForegroundProperty =
-            DependencyProperty.RegisterAttached("PropertyForeground", typeof(Brush), typeof(GridControl), new PropertyMetadata(Brushes.White));
+            DependencyProperty.RegisterAttached("PropertyForeground", typeof(Brush), typeof(GridControl),
+                new FrameworkPropertyMetadata(Brushes.White, FrameworkPropertyMetadataOptions.AffectsRender));
         public Brush PropertyForeground
         {
             get => (Brush)GetValue(PropertyForegroundProperty);
@@ -69,7 +76,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty HoveredPropertyBackgroundProperty =
-            DependencyProperty.RegisterAttached("HoveredPropertyBackground", typeof(Brush), typeof(GridControl), new PropertyMetadata(Brushes.Black));
+            DependencyProperty.RegisterAttached("HoveredPropertyBackground", typeof(Brush), typeof(GridControl),
+                new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender));
         public Brush HoveredPropertyBackground
         {
             get => (Brush)GetValue(HoveredPropertyBackgroundProperty);
@@ -77,7 +85,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty HoveredPropertyForegroundProperty =
-            DependencyProperty.RegisterAttached("HoveredPropertyForeground", typeof(Brush), typeof(GridControl), new PropertyMetadata(Brushes.White));
+            DependencyProperty.RegisterAttached("HoveredPropertyForeground", typeof(Brush), typeof(GridControl),
+                new FrameworkPropertyMetadata(Brushes.White, FrameworkPropertyMetadataOptions.AffectsRender));
         public Brush HoveredPropertyForeground
         {
             get => (Brush)GetValue(HoveredPropertyForegroundProperty);
@@ -85,7 +94,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty SelectedPropertyBackgroundProperty =
-            DependencyProperty.RegisterAttached("SelectedPropertyBackground", typeof(Brush), typeof(GridControl), new PropertyMetadata(Brushes.Black));
+            DependencyProperty.RegisterAttached("SelectedPropertyBackground", typeof(Brush), typeof(GridControl),
+                new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender));
         public Brush SelectedPropertyBackground
         {
             get => (Brush)GetValue(SelectedPropertyBackgroundProperty);
@@ -93,7 +103,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty SelectedPropertyForegroundProperty =
-            DependencyProperty.RegisterAttached("SelectedPropertyForeground", typeof(Brush), typeof(GridControl), new PropertyMetadata(Brushes.White));
+            DependencyProperty.RegisterAttached("SelectedPropertyForeground", typeof(Brush), typeof(GridControl),
+                new FrameworkPropertyMetadata(Brushes.White, FrameworkPropertyMetadataOptions.AffectsRender));
         public Brush SelectedPropertyForeground
         {
             get => (Brush)GetValue(SelectedPropertyForegroundProperty);
@@ -101,7 +112,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty LabelFontSizeProperty =
-            DependencyProperty.RegisterAttached("LabelFontSize", typeof(double), typeof(GridControl), new PropertyMetadata(12d));
+            DependencyProperty.RegisterAttached("LabelFontSize", typeof(double), typeof(GridControl),
+                new FrameworkPropertyMetadata(12d, FrameworkPropertyMetadataOptions.AffectsRender));
         public double LabelFontSize
         {
             get => (double)GetValue(LabelFontSizeProperty);
@@ -109,7 +121,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty LabelFontWeightProperty =
-            DependencyProperty.RegisterAttached("LabelFontWeight", typeof(FontWeight), typeof(GridControl), new PropertyMetadata(FontWeights.Normal));
+            DependencyProperty.RegisterAttached("LabelFontWeight", typeof(FontWeight), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontWeights.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontWeight LabelFontWeight
         {
             get => (FontWeight)GetValue(LabelFontWeightProperty);
@@ -117,7 +130,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty LabelFontFamilyProperty =
-            DependencyProperty.RegisterAttached("LabelFontFamily", typeof(FontFamily), typeof(GridControl), new PropertyMetadata(new FontFamily("Segoe UI")));
+            DependencyProperty.RegisterAttached("LabelFontFamily", typeof(FontFamily), typeof(GridControl),
+                new FrameworkPropertyMetadata(new FontFamily("Segoe UI"), FrameworkPropertyMetadataOptions.AffectsRender));
         public FontFamily LabelFontFamily
         {
             get => (FontFamily)GetValue(LabelFontFamilyProperty);
@@ -125,7 +139,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty LabelFontStretchProperty =
-            DependencyProperty.RegisterAttached("LabelFontStretch", typeof(FontStretch), typeof(GridControl), new PropertyMetadata(FontStretches.Normal));
+            DependencyProperty.RegisterAttached("LabelFontStretch", typeof(FontStretch), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontStretches.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStretch LabelFontStretch
         {
             get => (FontStretch)GetValue(LabelFontStretchProperty);
@@ -133,7 +148,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty LabelFontStyleProperty =
-            DependencyProperty.RegisterAttached("LabelFontStyle", typeof(FontStyle), typeof(GridControl), new PropertyMetadata(FontStyles.Normal));
+            DependencyProperty.RegisterAttached("LabelFontStyle", typeof(FontStyle), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontStyles.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStyle LabelFontStyle
         {
             get => (FontStyle)GetValue(LabelFontStyleProperty);
@@ -141,7 +157,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty HoveredLabelFontSizeProperty =
-            DependencyProperty.RegisterAttached("HoveredLabelFontSize", typeof(double), typeof(GridControl), new PropertyMetadata(12d));
+            DependencyProperty.RegisterAttached("HoveredLabelFontSize", typeof(double), typeof(GridControl),
+                new FrameworkPropertyMetadata(12d, FrameworkPropertyMetadataOptions.AffectsRender));
         public double HoveredLabelFontSize
         {
             get => (double)GetValue(HoveredLabelFontSizeProperty);
@@ -149,7 +166,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty HoveredLabelFontWeightProperty =
-            DependencyProperty.RegisterAttached("HoveredLabelFontWeight", typeof(FontWeight), typeof(GridControl), new PropertyMetadata(FontWeights.Normal));
+            DependencyProperty.RegisterAttached("HoveredLabelFontWeight", typeof(FontWeight), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontWeights.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontWeight HoveredLabelFontWeight
         {
             get => (FontWeight)GetValue(HoveredLabelFontWeightProperty);
@@ -157,7 +175,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty HoveredLabelFontFamilyProperty =
-            DependencyProperty.RegisterAttached("HoveredLabelFontFamily", typeof(FontFamily), typeof(GridControl), new PropertyMetadata(new FontFamily("Segoe UI")));
+            DependencyProperty.RegisterAttached("HoveredLabelFontFamily", typeof(FontFamily), typeof(GridControl),
+                new FrameworkPropertyMetadata(new FontFamily("Segoe UI"), FrameworkPropertyMetadataOptions.AffectsRender));
         public FontFamily HoveredLabelFontFamily
         {
             get => (FontFamily)GetValue(HoveredLabelFontFamilyProperty);
@@ -165,7 +184,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty HoveredLabelFontStretchProperty =
-            DependencyProperty.RegisterAttached("HoveredLabelFontStretch", typeof(FontStretch), typeof(GridControl), new PropertyMetadata(FontStretches.Normal));
+            DependencyProperty.RegisterAttached("HoveredLabelFontStretch", typeof(FontStretch), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontStretches.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStretch HoveredLabelFontStretch
         {
             get => (FontStretch)GetValue(HoveredLabelFontStretchProperty);
@@ -173,7 +193,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty HoveredLabelFontStyleProperty =
-            DependencyProperty.RegisterAttached("HoveredLabelFontStyle", typeof(FontStyle), typeof(GridControl), new PropertyMetadata(FontStyles.Normal));
+            DependencyProperty.RegisterAttached("HoveredLabelFontStyle", typeof(FontStyle), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontStyles.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStyle HoveredLabelFontStyle
         {
             get => (FontStyle)GetValue(HoveredLabelFontStyleProperty);
@@ -181,7 +202,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty SelectedLabelFontSizeProperty =
-            DependencyProperty.RegisterAttached("SelectedLabelFontSize", typeof(double), typeof(GridControl), new PropertyMetadata(12d));
+            DependencyProperty.RegisterAttached("SelectedLabelFontSize", typeof(double), typeof(GridControl),
+                new FrameworkPropertyMetadata(12d, FrameworkPropertyMetadataOptions.AffectsRender));
         public double SelectedLabelFontSize
         {
             get => (double)GetValue(SelectedLabelFontSizeProperty);
@@ -189,7 +211,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty SelectedLabelFontWeightProperty =
-            DependencyProperty.RegisterAttached("SelectedLabelFontWeight", typeof(FontWeight), typeof(GridControl), new PropertyMetadata(FontWeights.Normal));
+            DependencyProperty.RegisterAttached("SelectedLabelFontWeight", typeof(FontWeight), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontWeights.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontWeight SelectedLabelFontWeight
         {
             get => (FontWeight)GetValue(SelectedLabelFontWeightProperty);
@@ -197,7 +220,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty SelectedLabelFontFamilyProperty =
-            DependencyProperty.RegisterAttached("SelectedLabelFontFamily", typeof(FontFamily), typeof(GridControl), new PropertyMetadata(new FontFamily("Segoe UI")));
+            DependencyProperty.RegisterAttached("SelectedLabelFontFamily", typeof(FontFamily), typeof(GridControl),
+                new FrameworkPropertyMetadata(new FontFamily("Segoe UI"), FrameworkPropertyMetadataOptions.AffectsRender));
         public FontFamily SelectedLabelFontFamily
         {
             get => (FontFamily)GetValue(SelectedLabelFontFamilyProperty);
@@ -205,7 +229,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty SelectedLabelFontStretchProperty =
-            DependencyProperty.RegisterAttached("SelectedLabelFontStretch", typeof(FontStretch), typeof(GridControl), new PropertyMetadata(FontStretches.Normal));
+            DependencyProperty.RegisterAttached("SelectedLabelFontStretch", typeof(FontStretch), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontStretches.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStretch SelectedLabelFontStretch
         {
             get => (FontStretch)GetValue(SelectedLabelFontStretchProperty);
@@ -213,7 +238,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty SelectedLabelFontStyleProperty =
-            DependencyProperty.RegisterAttached("SelectedLabelFontStyle", typeof(FontStyle), typeof(GridControl), new PropertyMetadata(FontStyles.Normal));
+            DependencyProperty.RegisterAttached("SelectedLabelFontStyle", typeof(FontStyle), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontStyles.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStyle SelectedLabelFontStyle
         {
             get => (FontStyle)GetValue(SelectedLabelFontStyleProperty);
@@ -221,7 +247,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ValueFontSizeProperty =
-            DependencyProperty.RegisterAttached("ValueFontSize", typeof(double), typeof(GridControl), new PropertyMetadata(12d));
+            DependencyProperty.RegisterAttached("ValueFontSize", typeof(double), typeof(GridControl),
+                new FrameworkPropertyMetadata(12d, FrameworkPropertyMetadataOptions.AffectsRender));
         public double ValueFontSize
         {
             get => (double)GetValue(ValueFontSizeProperty);
@@ -229,7 +256,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ValueFontWeightProperty =
-            DependencyProperty.RegisterAttached("ValueFontWeight", typeof(FontWeight), typeof(GridControl), new PropertyMetadata(FontWeights.Normal));
+            DependencyProperty.RegisterAttached("ValueFontWeight", typeof(FontWeight), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontWeights.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontWeight ValueFontWeight
         {
             get => (FontWeight)GetValue(ValueFontWeightProperty);
@@ -237,7 +265,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ValueFontFamilyProperty =
-            DependencyProperty.RegisterAttached("ValueFontFamily", typeof(FontFamily), typeof(GridControl), new PropertyMetadata(new FontFamily("Segoe UI")));
+            DependencyProperty.RegisterAttached("ValueFontFamily", typeof(FontFamily), typeof(GridControl),
+                new FrameworkPropertyMetadata(new FontFamily("Segoe UI"), FrameworkPropertyMetadataOptions.AffectsRender));
         public FontFamily ValueFontFamily
         {
             get => (FontFamily)GetValue(ValueFontFamilyProperty);
@@ -245,7 +274,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ValueFontStretchProperty =
-            DependencyProperty.RegisterAttached("ValueFontStretch", typeof(FontStretch), typeof(GridControl), new PropertyMetadata(FontStretches.Normal));
+            DependencyProperty.RegisterAttached("ValueFontStretch", typeof(FontStretch), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontStretches.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStretch ValueFontStretch
         {
             get => (FontStretch)GetValue(ValueFontStretchProperty);
@@ -253,7 +283,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ValueFontStyleProperty =
-            DependencyProperty.RegisterAttached("ValueFontStyle", typeof(FontStyle), typeof(GridControl), new PropertyMetadata(FontStyles.Normal));
+            DependencyProperty.RegisterAttached("ValueFontStyle", typeof(FontStyle), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontStyles.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStyle ValueFontStyle
         {
             get => (FontStyle)GetValue(ValueFontStyleProperty);
@@ -261,7 +292,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty HoveredValueFontSizeProperty =
-            DependencyProperty.RegisterAttached("HoveredValueFontSize", typeof(double), typeof(GridControl), new PropertyMetadata(12d));
+            DependencyProperty.RegisterAttached("HoveredValueFontSize", typeof(double), typeof(GridControl),
+                new FrameworkPropertyMetadata(12d, FrameworkPropertyMetadataOptions.AffectsRender));
         public double HoveredValueFontSize
         {
             get => (double)GetValue(HoveredValueFontSizeProperty);
@@ -269,7 +301,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty HoveredValueFontWeightProperty =
-            DependencyProperty.RegisterAttached("HoveredValueFontWeight", typeof(FontWeight), typeof(GridControl), new PropertyMetadata(FontWeights.Normal));
+            DependencyProperty.RegisterAttached("HoveredValueFontWeight", typeof(FontWeight), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontWeights.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontWeight HoveredValueFontWeight
         {
             get => (FontWeight)GetValue(HoveredValueFontWeightProperty);
@@ -277,7 +310,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty HoveredValueFontFamilyProperty =
-            DependencyProperty.RegisterAttached("HoveredValueFontFamily", typeof(FontFamily), typeof(GridControl), new PropertyMetadata(new FontFamily("Segoe UI")));
+            DependencyProperty.RegisterAttached("HoveredValueFontFamily", typeof(FontFamily), typeof(GridControl),
+                new FrameworkPropertyMetadata(new FontFamily("Segoe UI"), FrameworkPropertyMetadataOptions.AffectsRender));
         public FontFamily HoveredValueFontFamily
         {
             get => (FontFamily)GetValue(HoveredValueFontFamilyProperty);
@@ -285,7 +319,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty HoveredValueFontStretchProperty =
-            DependencyProperty.RegisterAttached("HoveredValueFontStretch", typeof(FontStretch), typeof(GridControl), new PropertyMetadata(FontStretches.Normal));
+            DependencyProperty.RegisterAttached("HoveredValueFontStretch", typeof(FontStretch), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontStretches.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStretch HoveredValueFontStretch
         {
             get => (FontStretch)GetValue(HoveredValueFontStretchProperty);
@@ -293,7 +328,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty HoveredValueFontStyleProperty =
-            DependencyProperty.RegisterAttached("HoveredValueFontStyle", typeof(FontStyle), typeof(GridControl), new PropertyMetadata(FontStyles.Normal));
+            DependencyProperty.RegisterAttached("HoveredValueFontStyle", typeof(FontStyle), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontStyles.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStyle HoveredValueFontStyle
         {
             get => (FontStyle)GetValue(HoveredValueFontStyleProperty);
@@ -301,7 +337,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty SelectedValueFontSizeProperty =
-            DependencyProperty.RegisterAttached("SelectedValueFontSize", typeof(double), typeof(GridControl), new PropertyMetadata(12d));
+            DependencyProperty.RegisterAttached("SelectedValueFontSize", typeof(double), typeof(GridControl),
+                new FrameworkPropertyMetadata(12d, FrameworkPropertyMetadataOptions.AffectsRender));
         public double SelectedValueFontSize
         {
             get => (double)GetValue(SelectedValueFontSizeProperty);
@@ -309,7 +346,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty SelectedValueFontWeightProperty =
-            DependencyProperty.RegisterAttached("SelectedValueFontWeight", typeof(FontWeight), typeof(GridControl), new PropertyMetadata(FontWeights.Normal));
+            DependencyProperty.RegisterAttached("SelectedValueFontWeight", typeof(FontWeight), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontWeights.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontWeight SelectedValueFontWeight
         {
             get => (FontWeight)GetValue(SelectedValueFontWeightProperty);
@@ -317,7 +355,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty SelectedValueFontFamilyProperty =
-            DependencyProperty.RegisterAttached("SelectedValueFontFamily", typeof(FontFamily), typeof(GridControl), new PropertyMetadata(new FontFamily("Segoe UI")));
+            DependencyProperty.RegisterAttached("SelectedValueFontFamily", typeof(FontFamily), typeof(GridControl),
+                new FrameworkPropertyMetadata(new FontFamily("Segoe UI"), FrameworkPropertyMetadataOptions.AffectsRender));
         public FontFamily SelectedValueFontFamily
         {
             get => (FontFamily)GetValue(SelectedValueFontFamilyProperty);
@@ -325,7 +364,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty SelectedValueFontStretchProperty =
-            DependencyProperty.RegisterAttached("SelectedValueFontStretch", typeof(FontStretch), typeof(GridControl), new PropertyMetadata(FontStretches.Normal));
+            DependencyProperty.RegisterAttached("SelectedValueFontStretch", typeof(FontStretch), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontStretches.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStretch SelectedValueFontStretch
         {
             get => (FontStretch)GetValue(SelectedValueFontStretchProperty);
@@ -333,7 +373,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty SelectedValueFontStyleProperty =
-            DependencyProperty.RegisterAttached("SelectedValueFontStyle", typeof(FontStyle), typeof(GridControl), new PropertyMetadata(FontStyles.Normal));
+            DependencyProperty.RegisterAttached("SelectedValueFontStyle", typeof(FontStyle), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontStyles.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStyle SelectedValueFontStyle
         {
             get => (FontStyle)GetValue(SelectedValueFontStyleProperty);
@@ -341,7 +382,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty LabelWidthProperty =
-            DependencyProperty.RegisterAttached("LabelWidth", typeof(GridLength), typeof(GridControl), new PropertyMetadata(new GridLength(1d, GridUnitType.Star)));
+            DependencyProperty.RegisterAttached("LabelWidth", typeof(GridLength), typeof(GridControl),
+                new FrameworkPropertyMetadata(new GridLength(1d, GridUnitType.Star), FrameworkPropertyMetadataOptions.AffectsRender));
         public GridLength LabelWidth
         {
             get => (GridLength)GetValue(LabelWidthProperty);
@@ -349,15 +391,26 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ContentWidthProperty =
-            DependencyProperty.RegisterAttached("ContentWidth", typeof(GridLength), typeof(GridControl), new PropertyMetadata(new GridLength(1d, GridUnitType.Star)));
+            DependencyProperty.RegisterAttached("ContentWidth", typeof(GridLength), typeof(GridControl),
+                new FrameworkPropertyMetadata(new GridLength(1d, GridUnitType.Star), FrameworkPropertyMetadataOptions.AffectsRender));
         public GridLength ContentWidth
         {
             get => (GridLength)GetValue(ContentWidthProperty);
             set => SetValue(ContentWidthProperty, value);
         }
 
+        public static readonly DependencyProperty ContentHeightProperty =
+            DependencyProperty.RegisterAttached("ContentHeight", typeof(double), typeof(GridControl),
+                new FrameworkPropertyMetadata(25d, FrameworkPropertyMetadataOptions.AffectsRender));
+        public double ContentHeight
+        {
+            get => (double)GetValue(ContentHeightProperty);
+            set => SetValue(ContentHeightProperty, value);
+        }
+
         public static readonly DependencyProperty PropertyMarginProperty =
-            DependencyProperty.RegisterAttached("PropertyMargin", typeof(Thickness), typeof(GridControl), new PropertyMetadata(new Thickness(0d)));
+            DependencyProperty.RegisterAttached("PropertyMargin", typeof(Thickness), typeof(GridControl),
+                new FrameworkPropertyMetadata(new Thickness(0d), FrameworkPropertyMetadataOptions.AffectsRender));
         public Thickness PropertyMargin
         {
             get => (Thickness)GetValue(PropertyMarginProperty);
@@ -365,7 +418,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty PropertyHeightProperty =
-            DependencyProperty.RegisterAttached("PropertyHeight", typeof(double), typeof(GridControl), new PropertyMetadata(30d));
+            DependencyProperty.RegisterAttached("PropertyHeight", typeof(double), typeof(GridControl),
+                new FrameworkPropertyMetadata(30d, FrameworkPropertyMetadataOptions.AffectsRender));
         public double PropertyHeight
         {
             get => (double)GetValue(PropertyHeightProperty);
@@ -373,7 +427,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ContentBackgroundProperty =
-            DependencyProperty.RegisterAttached("ContentBackground", typeof(Brush), typeof(GridControl), new PropertyMetadata(Brushes.White));
+            DependencyProperty.RegisterAttached("ContentBackground", typeof(Brush), typeof(GridControl),
+                new FrameworkPropertyMetadata(Brushes.White, FrameworkPropertyMetadataOptions.AffectsRender));
         public Brush ContentBackground
         {
             get => (Brush)GetValue(ContentBackgroundProperty);
@@ -381,7 +436,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ContentForegroundProperty =
-            DependencyProperty.RegisterAttached("ContentForeground", typeof(Brush), typeof(GridControl), new PropertyMetadata(Brushes.Black));
+            DependencyProperty.RegisterAttached("ContentForeground", typeof(Brush), typeof(GridControl),
+                new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender));
         public Brush ContentForeground
         {
             get => (Brush)GetValue(ContentForegroundProperty);
@@ -389,7 +445,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ContentBorderBrushProperty =
-            DependencyProperty.RegisterAttached("ContentBorderBrush", typeof(Brush), typeof(GridControl), new PropertyMetadata(Brushes.Gray));
+            DependencyProperty.RegisterAttached("ContentBorderBrush", typeof(Brush), typeof(GridControl),
+                new FrameworkPropertyMetadata(Brushes.Gray, FrameworkPropertyMetadataOptions.AffectsRender));
         public Brush ContentBorderBrush
         {
             get => (Brush)GetValue(ContentBorderBrushProperty);
@@ -397,7 +454,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ContentBorderThicknessProperty =
-            DependencyProperty.RegisterAttached("ContentBorderThickness", typeof(Thickness), typeof(GridControl), new PropertyMetadata(new Thickness(0d)));
+            DependencyProperty.RegisterAttached("ContentBorderThickness", typeof(Thickness), typeof(GridControl),
+                new FrameworkPropertyMetadata(new Thickness(0d), FrameworkPropertyMetadataOptions.AffectsRender));
         public Thickness ContentBorderThickness
         {
             get => (Thickness)GetValue(ContentBorderThicknessProperty);
@@ -405,7 +463,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ContentFontSizeProperty =
-            DependencyProperty.RegisterAttached("ContentFontSize", typeof(double), typeof(GridControl), new PropertyMetadata(12d));
+            DependencyProperty.RegisterAttached("ContentFontSize", typeof(double), typeof(GridControl),
+                new FrameworkPropertyMetadata(12d, FrameworkPropertyMetadataOptions.AffectsRender));
         public double ContentFontSize
         {
             get => (double)GetValue(ContentFontSizeProperty);
@@ -413,7 +472,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ContentFontWeightProperty =
-            DependencyProperty.RegisterAttached("ContentFontWeight", typeof(FontWeight), typeof(GridControl), new PropertyMetadata(FontWeights.Normal));
+            DependencyProperty.RegisterAttached("ContentFontWeight", typeof(FontWeight), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontWeights.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontWeight ContentFontWeight
         {
             get => (FontWeight)GetValue(ContentFontWeightProperty);
@@ -421,7 +481,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ContentFontFamilyProperty =
-            DependencyProperty.RegisterAttached("ContentFontFamily", typeof(FontFamily), typeof(GridControl), new PropertyMetadata(new FontFamily("Segoe UI")));
+            DependencyProperty.RegisterAttached("ContentFontFamily", typeof(FontFamily), typeof(GridControl),
+                new FrameworkPropertyMetadata(new FontFamily("Segoe UI"), FrameworkPropertyMetadataOptions.AffectsRender));
         public FontFamily ContentFontFamily
         {
             get => (FontFamily)GetValue(ContentFontFamilyProperty);
@@ -429,7 +490,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ContentFontStretchProperty =
-            DependencyProperty.RegisterAttached("ContentFontStretch", typeof(FontStretch), typeof(GridControl), new PropertyMetadata(FontStretches.Normal));
+            DependencyProperty.RegisterAttached("ContentFontStretch", typeof(FontStretch), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontStretches.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStretch ContentFontStretch
         {
             get => (FontStretch)GetValue(ContentFontStretchProperty);
@@ -437,7 +499,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ContentFontStyleProperty =
-            DependencyProperty.RegisterAttached("ContentFontStyle", typeof(FontStyle), typeof(GridControl), new PropertyMetadata(FontStyles.Normal));
+            DependencyProperty.RegisterAttached("ContentFontStyle", typeof(FontStyle), typeof(GridControl),
+                new FrameworkPropertyMetadata(FontStyles.Normal, FrameworkPropertyMetadataOptions.AffectsRender));
         public FontStyle ContentFontStyle
         {
             get => (FontStyle)GetValue(ContentFontStyleProperty);
@@ -445,7 +508,8 @@ namespace PropertyGridControl
         }
 
         public static readonly DependencyProperty ContentTextProperty =
-            DependencyProperty.RegisterAttached("ContentText", typeof(string), typeof(GridControl), new PropertyMetadata(default(string)));
+            DependencyProperty.RegisterAttached("ContentText", typeof(string), typeof(GridControl),
+                new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.AffectsRender));
         public string ContentText
         {
             get => (string)GetValue(ContentTextProperty);
@@ -454,12 +518,13 @@ namespace PropertyGridControl
 
         static GridControl()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(GridControl), new FrameworkPropertyMetadata(typeof(GridControl)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(GridControl),
+                new FrameworkPropertyMetadata(typeof(GridControl), FrameworkPropertyMetadataOptions.AffectsRender));
         }
 
         public GridControl()
         {
-
+            
         }
     }
 }

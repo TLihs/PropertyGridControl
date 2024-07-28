@@ -15,7 +15,8 @@ namespace PropertyGridControl.Controls
 
         public event EventHandler<string>? CharFilterChanged;
         public static readonly DependencyProperty CharFilterProperty =
-            DependencyProperty.RegisterAttached("CharFilter", typeof(string), typeof(TextBoxGridItem), new PropertyMetadata(string.Empty));
+            DependencyProperty.RegisterAttached("CharFilter", typeof(string), typeof(TextBoxGridItem),
+                new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.AffectsRender));
         public string CharFilter
         {
             get => (string)GetValue(CharFilterProperty);
@@ -24,6 +25,20 @@ namespace PropertyGridControl.Controls
                 SetValue(CharFilterProperty, value);
                 CharFilterChanged?.Invoke(this, value);
                 InitializeAllowedChars(value);
+            }
+        }
+
+        public event EventHandler<bool>? IsReadonlyChanged;
+        public static readonly DependencyProperty IsReadonlyProperty =
+            DependencyProperty.RegisterAttached("IsReadonly", typeof(bool), typeof(TextBoxGridItem),
+                new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
+        public bool IsReadonly
+        {
+            get => (bool)GetValue(IsReadonlyProperty);
+            set
+            {
+                SetValue(IsReadonlyProperty, value);
+                IsReadonlyChanged?.Invoke(this, value);
             }
         }
 
